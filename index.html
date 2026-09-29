@@ -516,9 +516,9 @@
   // ============ ETKİNLİKLER ============
   const MONTHS = ['OCA','ŞUB','MAR','NİS','MAY','HAZ','TEM','AĞU','EYL','EKİ','KAS','ARA'];
   const races = [
-    { date: new Date('2025-10-26'), name: 'Çanakkale Yarı Maratonu', meta: '21.1 km · Çanakkale' },
-    { date: new Date('2025-11-09'), name: 'İstanbul Maratonu', meta: '42.2 km · İstanbul' },
-    { date: new Date('2025-12-07'), name: 'Troya Koşusu', meta: '10 km · Çanakkale' },
+    { date: new Date('2026-10-18'), name: 'Çanakkale Yarı Maratonu', meta: '21.1 km · Çanakkale' },
+    { date: new Date('2026-11-08'), name: 'İstanbul Maratonu', meta: '42.2 km · İstanbul' },
+    { date: new Date('2027-03-18'), name: 'Troya Koşusu', meta: '10 km · Çanakkale' },
   ];
   const now = new Date();
   const upcoming = races.filter(r => r.date >= now).sort((a,b) => a.date - b.date);
@@ -544,8 +544,12 @@
   // ============ REVEAL ============
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.12 });
+  }, { threshold: 0, rootMargin: '0px 0px -50px 0px' });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  // Fallback: show all after 1.5s if observer didn't fire
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+  }, 1500);
 
   // ============ MODAL ============
   const overlay = document.getElementById('modalOverlay');
