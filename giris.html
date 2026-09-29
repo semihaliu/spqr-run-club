@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Giriş Yap — SPQR Run Club</title>
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  .auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--cream);
+  }
+
+  .auth-box {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2.5rem 2rem;
+  }
+
+  .auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .auth-logo img { width: 36px; height: 36px; object-fit: contain; }
+  .auth-logo span { font-family: var(--display); font-weight: 900; font-size: 1.1rem; letter-spacing: 0.05em; }
+
+  .auth-box h1 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  .auth-box p.sub { font-size: 0.85rem; opacity: 0.5; margin-bottom: 2rem; }
+
+  .auth-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .auth-field label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; }
+  .auth-field input {
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    background: transparent;
+  }
+  .auth-field input:focus { border-color: var(--black); }
+
+  .auth-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--black);
+    color: var(--cream);
+    border: none;
+    border-radius: 2px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: opacity 0.2s;
+  }
+  .auth-btn:hover { opacity: 0.85; }
+  .auth-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .auth-status { margin-top: 1rem; font-size: 0.85rem; min-height: 1.2em; }
+  .auth-status.error { color: #b45000; }
+  .auth-status.ok { color: #2a7a50; }
+
+  .auth-links { margin-top: 1.5rem; font-size: 0.82rem; opacity: 0.55; text-align: center; }
+  .auth-links a { color: inherit; font-weight: 600; }
+
+  .divider { border: none; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="SPQR Run Club logo" />
+    <span>SPQR</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Ana Sayfa</a></li>
+    <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+    <li><a href="index.html#kayit">Kayıt Ol</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-box">
+    <a class="auth-logo" href="index.html">
+      <img src="logo.png" alt="SPQR" />
+      <span>SPQR</span>
+    </a>
+
+    <h1>Giriş Yap</h1>
+    <p class="sub">SPQR Run Club üyesi misin? Hoş geldin.</p>
+
+    <div class="auth-field">
+      <label for="loginEmail">E-posta</label>
+      <input id="loginEmail" type="email" placeholder="ornek@mail.com" autocomplete="email" />
+    </div>
+
+    <div class="auth-field">
+      <label for="loginPassword">Şifre</label>
+      <input id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+
+    <button class="auth-btn" id="loginBtn" onclick="doLogin()">GİRİŞ YAP →</button>
+
+    <div class="auth-status" id="loginStatus"></div>
+
+    <hr class="divider" />
+
+    <div class="auth-links">
+      Hesabın yok mu? <a href="index.html#kayit">Kayıt Ol</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://akqpdjdgsgwdhrdpgacl.supabase.co',
+    'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
+  );
+
+  // Already logged in → go to panel
+  db.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = 'panel.html';
+  });
+
+  document.getElementById('mobileToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  async function doLogin() {
+    const status = document.getElementById('loginStatus');
+    const btn = document.getElementById('loginBtn');
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+      status.className = 'auth-status error';
+      status.textContent = '⚠️ E-posta ve şifre girin.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'GİRİŞ YAPILIYOR...';
+    status.textContent = '';
+
+    const { error } = await db.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      btn.disabled = false;
+      btn.textContent = 'GİRİŞ YAP →';
+      status.className = 'auth-status error';
+      if (error.message.includes('Invalid login')) {
+        status.textContent = '⚠️ E-posta veya şifre hatalı.';
+      } else if (error.message.includes('Email not confirmed')) {
+        status.textContent = '⚠️ E-posta doğrulanmadı. Gelen kutunu kontrol et.';
+      } else {
+        status.textContent = '⚠️ ' + error.message;
+      }
+      return;
+    }
+
+    status.className = 'auth-status ok';
+    status.textContent = '✅ Giriş başarılı! Yönlendiriliyor...';
+    setTimeout(() => window.location.href = 'panel.html', 800);
+  }
+</script>
+</body>
+</html>

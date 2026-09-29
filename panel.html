@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Üye Paneli — SPQR Run Club</title>
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  .panel-page { min-height: 100vh; padding: 6rem 0 4rem; background: var(--cream); }
+  .panel-header { margin-bottom: 3rem; border-bottom: 1px solid var(--line); padding-bottom: 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .panel-greeting { font-family: var(--display); font-weight: 900; font-size: 2.5rem; text-transform: uppercase; line-height: 1; }
+  .panel-greeting em { font-family: var(--serif); font-style: italic; }
+  .panel-meta { font-size: 0.8rem; opacity: 0.45; margin-top: 0.5rem; }
+  .logout-btn { padding: 0.6rem 1.2rem; border: 1.5px solid var(--black); background: transparent; font-family: var(--display); font-weight: 800; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background 0.15s, color 0.15s; }
+  .logout-btn:hover { background: var(--black); color: var(--cream); }
+  .panel-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .panel-card { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 1.5rem; }
+  .panel-card .label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.4; margin-bottom: 0.5rem; }
+  .panel-card .value { font-family: var(--display); font-weight: 900; font-size: 1.8rem; line-height: 1; }
+  .panel-card .value.sm { font-size: 1rem; margin-top: 0.25rem; }
+  .panel-section { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 1.5rem; margin-bottom: 1rem; }
+  .panel-section h3 { font-family: var(--display); font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+  .info-row { display: flex; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(10,10,10,0.05); font-size: 0.88rem; align-items: baseline; }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .key { font-weight: 700; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.35; min-width: 100px; flex-shrink: 0; }
+  .schedule-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid rgba(10,10,10,0.05); font-size: 0.88rem; }
+  .schedule-item:last-child { border-bottom: none; }
+  .schedule-day { font-family: var(--display); font-weight: 900; font-size: 0.85rem; text-transform: uppercase; min-width: 90px; }
+  .ig-link { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-family: var(--display); font-weight: 800; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--black); padding: 0.6rem 1.1rem; border: 1.5px solid var(--black); border-radius: 2px; transition: background 0.15s, color 0.15s; }
+  .ig-link:hover { background: var(--black); color: var(--cream); }
+  .loading-screen { position: fixed; inset: 0; background: var(--cream); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 900; font-size: 1.2rem; letter-spacing: 0.1em; opacity: 0.4; z-index: 9999; }
+  @media (max-width: 700px) { .panel-cards { grid-template-columns: 1fr 1fr; } .panel-greeting { font-size: 1.8rem; } }
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">YÜKLENIYOR…</div>
+
+<nav>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="SPQR Run Club logo" />
+    <span>SPQR</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Ana Sayfa</a></li>
+    <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+    <li><a href="takvim.html">Takvim</a></li>
+    <li><a href="galeri.html">Galeri</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="panel-page" id="panelPage" style="display:none;">
+  <div class="container">
+    <div class="panel-header">
+      <div>
+        <div class="panel-greeting">Merhaba, <em id="userName">Koşucu</em>!</div>
+        <div class="panel-meta" id="memberSince">Üyelik tarihi yükleniyor…</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">ÇIKIŞ YAP</button>
+    </div>
+
+    <div class="panel-cards">
+      <div class="panel-card"><div class="label">Haftalık Koşu</div><div class="value">3×</div></div>
+      <div class="panel-card"><div class="label">Katılım Ücreti</div><div class="value">0₺</div></div>
+      <div class="panel-card"><div class="label">Üyelik</div><div class="value sm">✅ Aktif</div></div>
+    </div>
+
+    <div class="panel-section">
+      <h3>Profil Bilgilerin</h3>
+      <div class="info-row"><span class="key">Ad Soyad</span><span id="profileName">—</span></div>
+      <div class="info-row"><span class="key">E-posta</span><span id="profileEmail">—</span></div>
+      <div class="info-row"><span class="key">Telefon</span><span id="profilePhone">—</span></div>
+      <div class="info-row"><span class="key">Seviye</span><span id="profileSeviye">—</span></div>
+    </div>
+
+    <div class="panel-section">
+      <h3>Haftalık Program</h3>
+      <div class="schedule-item"><span class="schedule-day">Pazartesi</span><span style="opacity:0.6;font-size:0.82rem;">20:00 — 18 Mart Stadyumu</span></div>
+      <div class="schedule-item"><span class="schedule-day">Perşembe</span><span style="opacity:0.6;font-size:0.82rem;">20:00 — 18 Mart Stadyumu</span></div>
+      <div class="schedule-item"><span class="schedule-day">Cumartesi</span><span style="opacity:0.6;font-size:0.82rem;">08:00 — Açık Alan Koşusu</span></div>
+    </div>
+
+    <div class="panel-section">
+      <h3>Sosyal</h3>
+      <p style="font-size:0.88rem;opacity:0.6;margin-bottom:0.5rem;">Güncel duyurular için Instagram'ı takip et.</p>
+      <a class="ig-link" href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">INSTAGRAM → @spqrrunclub</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://akqpdjdgsgwdhrdpgacl.supabase.co',
+    'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
+  );
+
+  document.getElementById('mobileToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  db.auth.getSession().then(({ data: { session } }) => {
+    if (!session) { window.location.href = 'giris.html'; return; }
+
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const firstName = (meta.full_name || user.email).split(' ')[0];
+
+    document.getElementById('userName').textContent = firstName;
+    document.getElementById('profileName').textContent = meta.full_name || '—';
+    document.getElementById('profileEmail').textContent = user.email;
+    document.getElementById('profilePhone').textContent = meta.phone || '—';
+    document.getElementById('profileSeviye').textContent = meta.seviye || '—';
+
+    const joined = new Date(user.created_at);
+    document.getElementById('memberSince').textContent = 'Üyelik: ' + joined.toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('panelPage').style.display = '';
+  });
+
+  async function doLogout() {
+    await db.auth.signOut();
+    window.location.href = 'index.html';
+  }
+</script>
+</body>
+</html>

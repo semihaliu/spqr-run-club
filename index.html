@@ -38,6 +38,8 @@
     <li><a href="galeri.html">Galeri</a></li>
     <li><a href="index.html#kayit">Kayıt</a></li>
     <li><a href="index.html#iletisim">İletişim</a></li>
+    <li id="navGirisLi"><a href="giris.html">Giriş Yap</a></li>
+    <li id="navPanelLi" style="display:none;"><a href="panel.html">Panelim</a></li>
   </ul>
   <button class="mobile-toggle" id="mobileToggle">
     <span></span><span></span><span></span>
@@ -398,6 +400,10 @@
           <label for="rTel">Telefon</label>
           <input id="rTel" name="telefon" type="tel" placeholder="05xx xxx xx xx" />
         </div>
+        <div class="field full">
+          <label for="rSifre">Şifre * <span style="opacity:0.5;font-size:0.75rem;">(en az 6 karakter)</span></label>
+          <input id="rSifre" name="sifre" type="password" required placeholder="••••••••" />
+        </div>
       </div>
       <div class="modal-nav">
         <span></span>
@@ -470,9 +476,25 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  // ============ SUPABASE ============
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://akqpdjdgsgwdhrdpgacl.supabase.co',
+    'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
+  );
+
   // ============ YEAR ============
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ============ AUTH NAV ============
+  db.auth.getSession().then(({ data: { session } }) => {
+    if (session) {
+      document.getElementById('navGirisLi').style.display = 'none';
+      document.getElementById('navPanelLi').style.display = '';
+    }
+  });
 
   // ============ MOBILE NAV ============
   const navLinks = document.getElementById('navLinks');
@@ -547,7 +569,6 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0, rootMargin: '0px 0px -50px 0px' });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  // Fallback: show all after 1.5s if observer didn't fire
   setTimeout(() => {
     document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
   }, 1500);
@@ -565,10 +586,44 @@
     });
   }
 
-  function submitKayit() {
+  async function submitKayit() {
     const status = document.getElementById('kayitStatus');
-    status.textContent = '✓ Kaydın alındı! En kısa sürede seninle iletişime geçeceğiz.';
-    setTimeout(() => overlay.classList.remove('open'), 2200);
+    const email = document.getElementById('rMail').value.trim();
+    const password = document.getElementById('rSifre').value;
+    const fullName = document.getElementById('rAd').value.trim();
+    const phone = document.getElementById('rTel').value.trim();
+    const seviye = document.getElementById('rSeviye').value;
+
+    if (!email || !password || !fullName) {
+      status.textContent = '⚠️ Ad soyad, e-posta ve şifre zorunludur.';
+      return;
+    }
+    if (password.length < 6) {
+      status.textContent = '⚠️ Şifre en az 6 karakter olmalıdır.';
+      return;
+    }
+
+    status.textContent = '⏳ Kaydediliyor...';
+
+    const { error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName, phone, seviye }
+      }
+    });
+
+    if (error) {
+      if (error.message.includes('already registered')) {
+        status.textContent = '⚠️ Bu e-posta zaten kayıtlı. Giriş yap!';
+      } else {
+        status.textContent = '⚠️ Hata: ' + error.message;
+      }
+      return;
+    }
+
+    status.innerHTML = '✅ Kaydın tamamlandı! E-postanı kontrol et — doğrulama bağlantısı gönderildi.';
+    setTimeout(() => overlay.classList.remove('open'), 3000);
   }
 
   // ============ CONTACT FORM ============
@@ -578,7 +633,6 @@
     this.reset();
   };
 </script>
-
 
 </body>
 </html>
