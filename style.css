@@ -84,6 +84,7 @@
   }
 
   .nav-links a:hover { opacity: 1; }
+  .nav-links a.active { opacity: 1; border-bottom: 2px solid var(--black); padding-bottom: 1px; }
 
   .mobile-toggle {
     display: none;

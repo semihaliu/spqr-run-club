@@ -39,7 +39,7 @@
     <li><a href="index.html#kayit">Kayıt</a></li>
     <li><a href="index.html#iletisim">İletişim</a></li>
   </ul>
-  <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+  <button class="mobile-toggle" id="mobileToggle">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -474,14 +474,22 @@
   // ============ YEAR ============
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // ============ MOBILE NAV ============
+  const navLinks = document.getElementById('navLinks');
+  document.getElementById('mobileToggle').addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
   // ============ NEXT RUN ============
   function updateNextRun() {
     const now = new Date();
-    const day = now.getDay(); // 0=Paz,1=Pzt,2=Sal,3=Çar,4=Per,5=Cum,6=Cmt
+    const day = now.getDay();
     const hour = now.getHours();
     const min = now.getMinutes();
 
-    // Slots: Mon=1 20:00, Thu=4 20:00, Sat=6 08:00
     const slots = [
       { day: 1, hour: 20, label: 'PAZARTESİ', time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
       { day: 4, hour: 20, label: 'PERŞEMBE',  time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
@@ -504,6 +512,34 @@
     document.getElementById('nextPlace').textContent = next.place;
   }
   updateNextRun();
+
+  // ============ ETKİNLİKLER ============
+  const MONTHS = ['OCA','ŞUB','MAR','NİS','MAY','HAZ','TEM','AĞU','EYL','EKİ','KAS','ARA'];
+  const races = [
+    { date: new Date('2025-10-26'), name: 'Çanakkale Yarı Maratonu', meta: '21.1 km · Çanakkale' },
+    { date: new Date('2025-11-09'), name: 'İstanbul Maratonu', meta: '42.2 km · İstanbul' },
+    { date: new Date('2025-12-07'), name: 'Troya Koşusu', meta: '10 km · Çanakkale' },
+  ];
+  const now = new Date();
+  const upcoming = races.filter(r => r.date >= now).sort((a,b) => a.date - b.date);
+  const evList = document.getElementById('evList');
+  if (!upcoming.length) {
+    evList.innerHTML = '<div class="ev-empty">Yakında etkinlik eklenecek.</div>';
+  } else {
+    evList.innerHTML = upcoming.map(r => `
+      <a class="ev-card" href="takvim.html" style="text-decoration:none;color:inherit;">
+        <div class="ev-date">
+          <span class="d">${r.date.getDate()}</span>
+          <span class="m">${MONTHS[r.date.getMonth()]}</span>
+        </div>
+        <div class="ev-body">
+          <div class="ev-name">${r.name}</div>
+          <div class="ev-meta">${r.meta}</div>
+        </div>
+        <span class="ev-arr">→</span>
+      </a>
+    `).join('');
+  }
 
   // ============ REVEAL ============
   const observer = new IntersectionObserver(entries => {
@@ -537,6 +573,7 @@
     this.reset();
   };
 </script>
+
 
 </body>
 </html>
