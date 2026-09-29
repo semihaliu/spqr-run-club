@@ -852,12 +852,16 @@
 
   /* ============ REVEAL ============ */
   .reveal {
-    opacity: 0;
-    transform: translateY(28px);
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
-  .reveal.visible {
+  /* JS adds .js-ready to <html> → only then hide elements before reveal */
+  .js-ready .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  .js-ready .reveal.visible {
     opacity: 1;
     transform: none;
   }
