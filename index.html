@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPQR Run Club — Çanakkale'nin Koşu Kulübü</title>
+<meta name="description" content="SPQR Run Club — Çanakkale'de haftanın üç günü buluşan koşu kulübü. S.P.Q.R." />
+
+<!-- Open Graph -->
+<meta property="og:title" content="SPQR Run Club" />
+<meta property="og:description" content="Çanakkale'nin koşu kulübü. S.P.Q.R." />
+<meta property="og:type" content="website" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo.png" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="SPQR Run Club logo" />
+    <span>SPQR</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
+    <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+    <li><a href="bulusma.html">Buluşma</a></li>
+    <li><a href="takvim.html">Takvim</a></li>
+    <li><a href="galeri.html">Galeri</a></li>
+    <li><a href="index.html#kayit">Kayıt</a></li>
+    <li><a href="index.html#iletisim">İletişim</a></li>
+  </ul>
+  <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <video class="hero-video" autoplay muted loop playsinline poster="hero-poster.jpg">
+    <source src="hero.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-video-overlay"></div>
+  <div class="hero-rings"><div class="ring-3"></div></div>
+
+  <div class="hero-content">
+    <div class="hero-meta">
+      <span>EST. 2025 — ÇANAKKALE</span>
+      <span>40° 09' K · 26° 24' D</span>
+      <span>HAFTADA 3 KOŞU</span>
+    </div>
+    <h1>
+      S.P.Q<span class="italic-tag">run&nbsp;for</span><span class="spqr-red">R.</span>
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <div>
+      <p class="hero-intro">
+        Çanakkale'de koşuyu topluluk haline getirdik.
+        Pazartesi ve Perşembe akşamı stadyumda, Cumartesi sabahı açık alanda.
+        <strong>Tempon kendi temponken, ruhun bizimle yükselir.</strong>
+      </p>
+
+      <div class="hero-social">
+        <a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.95c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.22-.94.47-1.35.88-.41.41-.66.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.22.55.47.94.88 1.35.41.41.8.66 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.22.94-.47 1.35-.88.41-.41.66-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07zm0 3.32a4.57 4.57 0 1 1 0 9.14 4.57 4.57 0 0 1 0-9.14zm0 7.54a2.97 2.97 0 1 0 0-5.94 2.97 2.97 0 0 0 0 5.94zm5.82-7.74a1.07 1.07 0 1 1-2.14 0 1.07 1.07 0 0 1 2.14 0z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="next-run">
+      <div class="label">Bir Sonraki Koşu</div>
+      <div class="day" id="nextDay">PAZARTESİ</div>
+      <div class="time" id="nextTime">20:00</div>
+      <div class="place" id="nextPlace">18 Mart Stadyumu · Çanakkale</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>S.P.Q.R. RUN CLUB</span>
+    <span>ÇANAKKALE</span>
+    <span>HAFTADA 3 KOŞU</span>
+    <span>PAZARTESİ · PERŞEMBE · CUMARTESİ</span>
+    <span>S.P.Q.R. RUN CLUB</span>
+    <span>ÇANAKKALE</span>
+    <span>HAFTADA 3 KOŞU</span>
+    <span>PAZARTESİ · PERŞEMBE · CUMARTESİ</span>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section id="hakkimizda">
+  <div class="container reveal">
+    <div class="section-head">
+      <span class="section-num">01 / HAKKIMIZDA</span>
+      <h2 class="section-title">Koşu bir araç,<br><em>amacımız birlikte hareket etmek.</em></h2>
+    </div>
+
+    <p class="about-lead">
+      SPQR Run Club olarak biz, Çanakkale'de koşuyu tek başına yapılan bir spor olmaktan çıkardık.
+      18 Mart Stadyumu'nda ve Çanakkale'nin açık alanlarında buluşuyoruz.
+      Bizim için koşu; nabız yükseltmenin ötesinde, bir araya gelmenin ve bu topraklarda birlikte ilerlemenin en güzel bahanesi.
+      <strong>S.P.Q.R.</strong>
+    </p>
+
+    <div class="about-divider"></div>
+
+    <h3 class="about-sub">Neler yapıyoruz?</h3>
+    <p class="about-sub-text">Haftanın üç günü, ajandamızın en keyifli saatlerini birlikte dolduruyoruz.</p>
+
+    <div class="about-items">
+      <div class="about-item">
+        <span class="item-num">01</span>
+        <div>
+          <h4>Pazartesi ve Perşembe</h4>
+          <p>Her iki akşam 20:00'de 18 Mart Stadyumu'nda buluşuyoruz. Koşularımız herkese açık ve tamamen ücretsiz. Profesyonel bir atlet olmana gerek yok — tek ihtiyacın bir çift ayakkabı ve orada olma isteği.</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <span class="item-num">02</span>
+        <div>
+          <h4>Cumartesi Sabahı</h4>
+          <p>Her hafta 08:00'de açık alan koşusuyla sabahı birlikte karşılıyoruz. Çanakkale'nin doğasında, temiz havada, güneşle birlikte. Rota değişir, heyecan sabit kalır.</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <span class="item-num">03</span>
+        <div>
+          <h4>Kendi temponla</h4>
+          <p>Bitiş çizgisi yok, yarış yok. Herkes kendi temposunda, kendi enerjisiyle ilerliyor. İster yürü, ister koş — önemli olan hızın değil, o gün orada bizimle olman.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-stats">
+      <div class="stat">
+        <div class="num">3x</div>
+        <div class="label">Haftalık Koşu</div>
+      </div>
+      <div class="stat">
+        <div class="num">0₺</div>
+        <div class="label">Ücretsiz Katılım</div>
+      </div>
+      <div class="stat">
+        <div class="num">∞</div>
+        <div class="label">Tempo Özgürlüğü</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KEŞFET ============ -->
+<section id="kesfet">
+  <div class="container reveal">
+    <div class="section-head">
+      <span class="section-num">02 / KEŞFET</span>
+      <h2 class="section-title">Kulübü <em>gez.</em></h2>
+    </div>
+
+    <div class="banner-grid">
+      <a class="banner" href="antrenmanlar.html">
+        <span class="banner-num">PROGRAM</span>
+        <div>
+          <h3>Haftalık <em>program.</em></h3>
+          <p>Pazartesi, Perşembe akşamı ve Cumartesi sabahı — tüm seviyelere açık, tamamen ücretsiz koşularımızın detayları.</p>
+        </div>
+        <span class="banner-go">
+          Antrenmanlar
+          <svg viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5L12 20l8-8-8-8-1.5 1.5L16 11z"/></svg>
+        </span>
+      </a>
+
+      <a class="banner" href="bulusma.html">
+        <span class="banner-num">KONUM</span>
+        <div>
+          <h3>Buluşma <em>noktası.</em></h3>
+          <p>18 Mart Stadyumu ve Cumartesi açık alan koşuları için harita ve yol tarifi burada.</p>
+        </div>
+        <span class="banner-go">
+          Buluşma
+          <svg viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5L12 20l8-8-8-8-1.5 1.5L16 11z"/></svg>
+        </span>
+      </a>
+
+      <a class="banner" href="takvim.html">
+        <span class="banner-num">ETKİNLİK</span>
+        <div>
+          <h3>Yarış <em>takvimi.</em></h3>
+          <p>Birlikte katılacağımız yarışları ve özel etkinlikleri buradan takip et.</p>
+        </div>
+        <span class="banner-go">
+          Takvim
+          <svg viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5L12 20l8-8-8-8-1.5 1.5L16 11z"/></svg>
+        </span>
+      </a>
+
+      <a class="banner" href="galeri.html">
+        <span class="banner-num">KARELER</span>
+        <div>
+          <h3>Galeri.</h3>
+          <p>Çanakkale'deki koşularımızdan ve kulüp anlarımızdan kareler.</p>
+        </div>
+        <span class="banner-go">
+          Galeri
+          <svg viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5L12 20l8-8-8-8-1.5 1.5L16 11z"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REGISTRATION ============ -->
+<section id="kayit">
+  <div class="container reveal">
+    <div class="section-head">
+      <span class="section-num">03 / KAYIT OL</span>
+      <h2 class="section-title">Aramıza <em>katıl.</em></h2>
+    </div>
+
+    <div class="join-cta">
+      <div class="join-cta-main">
+        <p class="join-cta-lead">
+          Üyelik tamamen ücretsiz ve taahhütsüz. Birkaç kısa adımda seni tanıyalım —
+          gerisini birlikte koşarken hallederiz.
+        </p>
+        <ul class="join-cta-points">
+          <li>Tüm seviyelere açık, ücretsiz</li>
+          <li>Haftanın üç günü koşu</li>
+          <li>Yalnızca 3 kısa adım</li>
+        </ul>
+        <button class="btn join-open" type="button" id="kayitAc">KAYIT OL →</button>
+      </div>
+
+      <div class="join-cta-steps" aria-hidden="true">
+        <div class="join-step">
+          <span class="join-step-num">01</span>
+          <span class="join-step-label">Seni tanıyalım</span>
+        </div>
+        <div class="join-step">
+          <span class="join-step-num">02</span>
+          <span class="join-step-label">Koşu tercihlerin</span>
+        </div>
+        <div class="join-step">
+          <span class="join-step-num">03</span>
+          <span class="join-step-label">Onay &amp; gönder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="iletisim">
+  <div class="container reveal">
+    <div class="section-head">
+      <span class="section-num">04 / İLETİŞİM</span>
+      <h2 class="section-title">Bize <em>yazın.</em></h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Sorun, öneriniz veya iş birliği talebiniz için bize buradan ulaşabilirsiniz. Mesajınızı en kısa sürede yanıtlıyoruz.</p>
+
+        <ul class="contact-channels">
+          <li>
+            <div class="key">Instagram</div>
+            <div class="val"><a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">@spqrrunclub</a></div>
+          </li>
+          <li>
+            <div class="key">Lokasyon</div>
+            <div class="val">18 Mart Stadyumu · Çanakkale</div>
+          </li>
+          <li>
+            <div class="key">Pazartesi</div>
+            <div class="val">20:00 · 18 Mart Stadyumu</div>
+          </li>
+          <li>
+            <div class="key">Perşembe</div>
+            <div class="val">20:00 · 18 Mart Stadyumu</div>
+          </li>
+          <li>
+            <div class="key">Cumartesi</div>
+            <div class="val">08:00 · Açık Alan Koşusu</div>
+          </li>
+        </ul>
+      </div>
+
+      <form class="form" id="iletisimForm">
+        <input type="hidden" name="form_type" value="İletişim" />
+
+        <div class="field full">
+          <label for="cad">Ad Soyad</label>
+          <input id="cad" name="ad_soyad" type="text" required placeholder="Adın ve soyadın" />
+        </div>
+
+        <div class="field">
+          <label for="cmail">E-posta</label>
+          <input id="cmail" name="email" type="email" required placeholder="ornek@mail.com" />
+        </div>
+
+        <div class="field">
+          <label for="konu">Konu</label>
+          <input id="konu" name="konu" type="text" placeholder="Mesajın konusu" />
+        </div>
+
+        <div class="field full">
+          <label for="mesaj">Mesaj</label>
+          <textarea id="mesaj" name="mesaj" required placeholder="Yazmak istediklerin..."></textarea>
+        </div>
+
+        <button class="btn" type="submit">GÖNDER →</button>
+        <div class="form-status" id="iletisimStatus"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.png" alt="SPQR Run Club" />
+      <h4>SPQR RUN CLUB</h4>
+      <p>S.P.Q.R.</p>
+    </div>
+
+    <div class="footer-col">
+      <h5>Keşfet</h5>
+      <ul>
+        <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
+        <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+        <li><a href="bulusma.html">Buluşma</a></li>
+        <li><a href="takvim.html">Takvim</a></li>
+        <li><a href="galeri.html">Galeri</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Katıl</h5>
+      <ul>
+        <li><a href="index.html#kayit">Kayıt Ol</a></li>
+        <li><a href="index.html#iletisim">İletişim</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Sosyal</h5>
+      <ul>
+        <li><a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> SPQR Run Club · Çanakkale</span>
+    <span class="tag">S.P.Q.R.</span>
+  </div>
+</footer>
+
+<!-- ============ KAYIT MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalKapat" aria-label="Kapat">×</button>
+
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot0"></div>
+      <div class="step-dot" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+    </div>
+
+    <!-- ADIM 1 -->
+    <div id="step0">
+      <h2 id="modalTitle">Merhaba!</h2>
+      <p class="modal-sub">Seni tanıyalım — 3 adımda tamamlıyorsun.</p>
+      <div class="form">
+        <div class="field full">
+          <label for="rAd">Ad Soyad *</label>
+          <input id="rAd" name="ad_soyad" type="text" required placeholder="Adın ve soyadın" />
+        </div>
+        <div class="field full">
+          <label for="rMail">E-posta *</label>
+          <input id="rMail" name="email" type="email" required placeholder="ornek@mail.com" />
+        </div>
+        <div class="field full">
+          <label for="rTel">Telefon</label>
+          <input id="rTel" name="telefon" type="tel" placeholder="05xx xxx xx xx" />
+        </div>
+      </div>
+      <div class="modal-nav">
+        <span></span>
+        <button class="btn" onclick="goStep(1)">İleri →</button>
+      </div>
+    </div>
+
+    <!-- ADIM 2 -->
+    <div id="step1" style="display:none;">
+      <h2>Koşu tercihlerin</h2>
+      <p class="modal-sub">Hangi günler katılmayı planlıyorsun?</p>
+      <div class="form">
+        <div class="field full">
+          <label>Katılım Günleri</label>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.25rem;">
+            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;opacity:1;text-transform:none;letter-spacing:0;">
+              <input type="checkbox" name="gun" value="Pazartesi" /> Pazartesi 20:00 · 18 Mart Stadyumu
+            </label>
+            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;opacity:1;text-transform:none;letter-spacing:0;">
+              <input type="checkbox" name="gun" value="Persembe" /> Perşembe 20:00 · 18 Mart Stadyumu
+            </label>
+            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;opacity:1;text-transform:none;letter-spacing:0;">
+              <input type="checkbox" name="gun" value="Cumartesi" /> Cumartesi 08:00 · Açık Alan Koşusu
+            </label>
+          </div>
+        </div>
+        <div class="field full">
+          <label for="rSeviye">Koşu Seviyesi</label>
+          <select id="rSeviye" name="seviye" style="padding:0.75rem 0.9rem;border:1px solid rgba(10,10,10,0.12);background:transparent;font-family:inherit;font-size:0.9rem;border-radius:2px;outline:none;cursor:pointer;">
+            <option value="">Seç…</option>
+            <option>Yeni Başlayan</option>
+            <option>Orta Seviye</option>
+            <option>İleri Seviye</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-nav">
+        <button class="btn-ghost" onclick="goStep(0)">← Geri</button>
+        <button class="btn" onclick="goStep(2)">İleri →</button>
+      </div>
+    </div>
+
+    <!-- ADIM 3 -->
+    <div id="step2" style="display:none;">
+      <h2>Son adım!</h2>
+      <p class="modal-sub">Bizi nereden duydun ve eklemek istediğin bir şey var mı?</p>
+      <div class="form">
+        <div class="field full">
+          <label for="rKaynak">Bizi nereden duydun?</label>
+          <select id="rKaynak" name="kaynak" style="padding:0.75rem 0.9rem;border:1px solid rgba(10,10,10,0.12);background:transparent;font-family:inherit;font-size:0.9rem;border-radius:2px;outline:none;cursor:pointer;">
+            <option value="">Seç…</option>
+            <option>Instagram</option>
+            <option>Bir arkadaştan</option>
+            <option>Google</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="rNot">Eklemek istediğin bir şey</label>
+          <textarea id="rNot" name="not" placeholder="İsteğe bağlı…" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-nav">
+        <button class="btn-ghost" onclick="goStep(1)">← Geri</button>
+        <button class="btn" onclick="submitKayit()">GÖNDER →</button>
+      </div>
+      <div class="form-status" id="kayitStatus" style="margin-top:1rem;"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ============ YEAR ============
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ============ NEXT RUN ============
+  function updateNextRun() {
+    const now = new Date();
+    const day = now.getDay(); // 0=Paz,1=Pzt,2=Sal,3=Çar,4=Per,5=Cum,6=Cmt
+    const hour = now.getHours();
+    const min = now.getMinutes();
+
+    // Slots: Mon=1 20:00, Thu=4 20:00, Sat=6 08:00
+    const slots = [
+      { day: 1, hour: 20, label: 'PAZARTESİ', time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
+      { day: 4, hour: 20, label: 'PERŞEMBE',  time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
+      { day: 6, hour: 8,  label: 'CUMARTESİ', time: '08:00', place: 'Açık Alan Koşusu · Çanakkale' },
+    ];
+
+    function minutesFromNow(slot) {
+      let diff = (slot.day - day + 7) % 7;
+      if (diff === 0) {
+        const slotMins = slot.hour * 60;
+        const nowMins = hour * 60 + min;
+        if (slotMins <= nowMins) diff = 7;
+      }
+      return diff * 24 * 60;
+    }
+
+    const next = slots.reduce((a, b) => minutesFromNow(a) < minutesFromNow(b) ? a : b);
+    document.getElementById('nextDay').textContent = next.label;
+    document.getElementById('nextTime').textContent = next.time;
+    document.getElementById('nextPlace').textContent = next.place;
+  }
+  updateNextRun();
+
+  // ============ REVEAL ============
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ============ MODAL ============
+  const overlay = document.getElementById('modalOverlay');
+  document.getElementById('kayitAc').onclick = () => { overlay.classList.add('open'); goStep(0); };
+  document.getElementById('modalKapat').onclick = () => overlay.classList.remove('open');
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  function goStep(n) {
+    [0,1,2].forEach(i => {
+      document.getElementById('step'+i).style.display = i===n ? '' : 'none';
+      document.getElementById('dot'+i).className = 'step-dot' + (i<=n ? ' active' : '');
+    });
+  }
+
+  function submitKayit() {
+    const status = document.getElementById('kayitStatus');
+    status.textContent = '✓ Kaydın alındı! En kısa sürede seninle iletişime geçeceğiz.';
+    setTimeout(() => overlay.classList.remove('open'), 2200);
+  }
+
+  // ============ CONTACT FORM ============
+  document.getElementById('iletisimForm').onsubmit = function(e) {
+    e.preventDefault();
+    document.getElementById('iletisimStatus').textContent = '✓ Mesajın alındı, teşekkürler!';
+    this.reset();
+  };
+</script>
+
+</body>
+</html>
