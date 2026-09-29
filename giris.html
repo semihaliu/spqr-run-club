@@ -142,9 +142,9 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  const { createClient } = supabase;
+  const { createClient } = window.supabase;
   const db = createClient(
     'https://akqpdjdgsgwdhrdpgacl.supabase.co',
     'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
