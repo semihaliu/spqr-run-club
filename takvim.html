@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yarış Takvimi — SPQR Run Club</title>
+<meta name="description" content="SPQR Run Club ile birlikte katılacağımız yarışlar ve özel etkinlikler." />
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  .subpage-section { padding: 8rem 0 5rem; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none; color: inherit;
+    opacity: 0.5; margin-bottom: 2.5rem; transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 1; }
+  .back-link svg { width: 16px; height: 16px; fill: currentColor; }
+
+  .race-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+
+  .race-card {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.5);
+    transition: border-color .2s, background .2s;
+  }
+  .race-card:hover { background: var(--cream-warm); }
+  .race-card.race-past { opacity: .5; }
+  .race-card.joined { border-color: var(--black); }
+
+  .race-date {
+    flex-shrink: 0; text-align: center; min-width: 2.5rem;
+    font-family: var(--display); line-height: 1;
+  }
+  .race-date .d { display: block; font-size: 2rem; font-weight: 900; }
+  .race-date .m { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+
+  .race-body { flex: 1; min-width: 0; }
+  .race-name { font-family: var(--display); font-weight: 800; font-size: 1.05rem; line-height: 1.1; margin-bottom: .3rem; }
+  .race-meta { font-size: .78rem; opacity: .6; letter-spacing: .04em; }
+
+  .race-badge {
+    flex-shrink: 0;
+    font-family: var(--display); font-weight: 800; font-size: .72rem;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .4rem .9rem; border-radius: 2px;
+    border: 1.5px solid var(--black); color: var(--black);
+    white-space: nowrap;
+  }
+
+  .race-empty {
+    text-align: center; padding: 5rem 1rem; opacity: .5;
+  }
+  .race-empty .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+  @media (max-width: 600px) {
+    .race-card { flex-wrap: wrap; gap: .75rem; padding: 1rem; }
+    .race-badge { font-size: .68rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="SPQR Run Club logo" />
+    <span>SPQR</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
+    <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+    <li><a href="bulusma.html">Buluşma</a></li>
+    <li><a href="takvim.html" class="active">Takvim</a></li>
+    <li><a href="galeri.html">Galeri</a></li>
+    <li><a href="index.html#kayit">Kayıt</a></li>
+    <li><a href="index.html#iletisim">İletişim</a></li>
+  </ul>
+  <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ============ TAKVİM ============ -->
+<section id="takvim" class="subpage-section">
+  <div class="container reveal">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg>
+      Ana Sayfa
+    </a>
+
+    <div class="section-head">
+      <span class="section-num">04 / ETKİNLİK TAKVİMİ</span>
+      <h2 class="section-title">Sırada <em>ne var?</em></h2>
+    </div>
+
+    <div class="race-list" id="racesList">
+      <!-- Yarışlar JS ile render edilir -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.png" alt="SPQR Run Club" />
+      <h4>SPQR RUN CLUB</h4>
+      <p>S.P.Q.R.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Keşfet</h5>
+      <ul>
+        <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
+        <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+        <li><a href="bulusma.html">Buluşma</a></li>
+        <li><a href="takvim.html">Takvim</a></li>
+        <li><a href="galeri.html">Galeri</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Katıl</h5>
+      <ul>
+        <li><a href="index.html#kayit">Kayıt Ol</a></li>
+        <li><a href="index.html#iletisim">İletişim</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Sosyal</h5>
+      <ul>
+        <li><a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> SPQR Run Club · Çanakkale</span>
+    <span class="tag">S.P.Q.R.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Yarış verisi — ileride eklenebilir
+  const races = [
+    {
+      date: new Date('2025-10-26'),
+      name: 'Çanakkale Yarı Maratonu',
+      meta: '21.1 km · Çanakkale',
+      past: false
+    },
+    {
+      date: new Date('2025-11-09'),
+      name: 'İstanbul Maratonu',
+      meta: '42.2 km · İstanbul',
+      past: false
+    },
+    {
+      date: new Date('2025-12-07'),
+      name: 'Troya Koşusu',
+      meta: '10 km · Çanakkale',
+      past: false
+    }
+  ];
+
+  const MONTHS = ['OCA','ŞUB','MAR','NİS','MAY','HAZ','TEM','AĞU','EYL','EKİ','KAS','ARA'];
+  const list = document.getElementById('racesList');
+
+  const now = new Date();
+  const sorted = races.sort((a,b) => a.date - b.date);
+
+  if (!sorted.length) {
+    list.innerHTML = '<div class="race-empty"><div class="icon">→</div><p>Yakında etkinlik eklenecek.</p></div>';
+  } else {
+    sorted.forEach(r => {
+      const past = r.date < now;
+      list.innerHTML += `
+        <div class="race-card ${past ? 'race-past' : ''}">
+          <div class="race-date">
+            <span class="d">${r.date.getDate()}</span>
+            <span class="m">${MONTHS[r.date.getMonth()]}</span>
+          </div>
+          <div class="race-body">
+            <div class="race-name">${r.name}</div>
+            <div class="race-meta">${r.meta}</div>
+          </div>
+          ${!past ? '<span class="race-badge">Yaklaşıyor</span>' : ''}
+        </div>
+      `;
+    });
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

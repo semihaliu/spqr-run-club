@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antrenmanlar — SPQR Run Club</title>
+<meta name="description" content="SPQR Run Club haftalık koşu programı — Pazartesi, Perşembe ve Cumartesi." />
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  .subpage-section { padding: 8rem 0 5rem; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none; color: inherit;
+    opacity: 0.5; margin-bottom: 2.5rem; transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 1; }
+  .back-link svg { width: 16px; height: 16px; fill: currentColor; }
+
+  .sessions { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
+
+  .session {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .session:first-child { border-top: 1px solid var(--line); }
+
+  .session-day {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.4rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .session-day .day-sub {
+    display: block;
+    font-family: var(--body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    opacity: 0.4;
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+  }
+
+  .session-body h3 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .session-body p { font-size: 0.9rem; opacity: 0.65; line-height: 1.6; max-width: 55ch; }
+
+  .session-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+
+  .tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    opacity: 0.6;
+  }
+
+  .session-time {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 2rem;
+    line-height: 1;
+    opacity: 0.15;
+    white-space: nowrap;
+  }
+
+  .rules { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--line); }
+  .rules h3 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .rules-list { display: flex; flex-direction: column; gap: 1rem; }
+  .rule { display: flex; gap: 1rem; font-size: 0.9rem; line-height: 1.6; }
+  .rule-num {
+    font-family: var(--display); font-weight: 900; font-size: 1.1rem;
+    opacity: 0.2; min-width: 1.5rem; flex-shrink: 0; line-height: 1.4;
+  }
+
+  @media (max-width: 600px) {
+    .session { grid-template-columns: 1fr; gap: 0.5rem; }
+    .session-time { font-size: 1.3rem; opacity: 0.1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="SPQR Run Club logo" />
+    <span>SPQR</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
+    <li><a href="antrenmanlar.html" class="active">Antrenmanlar</a></li>
+    <li><a href="bulusma.html">Buluşma</a></li>
+    <li><a href="takvim.html">Takvim</a></li>
+    <li><a href="galeri.html">Galeri</a></li>
+    <li><a href="index.html#kayit">Kayıt</a></li>
+    <li><a href="index.html#iletisim">İletişim</a></li>
+  </ul>
+  <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ============ ANTRENMANLAR ============ -->
+<section id="antrenmanlar" class="subpage-section">
+  <div class="container reveal">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg>
+      Ana Sayfa
+    </a>
+
+    <div class="section-head">
+      <span class="section-num">02 / ANTRENMANLAR</span>
+      <h2 class="section-title">Haftalık <em>program.</em></h2>
+    </div>
+
+    <div class="sessions">
+      <div class="session">
+        <div class="session-day">
+          Pazartesi
+          <span class="day-sub">Her hafta</span>
+        </div>
+        <div class="session-body">
+          <h3>Stadyum Koşusu</h3>
+          <p>18 Mart Stadyumu'nun pistinde haftanın ilk koşusunu yapıyoruz. Isınma, koşu, serin tutma — her şey birlikte. Tüm seviyelere açık, ücretsiz.</p>
+          <div class="session-tags">
+            <span class="tag">Tüm Seviyeler</span>
+            <span class="tag">Ücretsiz</span>
+            <span class="tag">18 Mart Stadyumu</span>
+          </div>
+        </div>
+        <div class="session-time">20:00</div>
+      </div>
+
+      <div class="session">
+        <div class="session-day">
+          Perşembe
+          <span class="day-sub">Her hafta</span>
+        </div>
+        <div class="session-body">
+          <h3>Akşam Koşusu</h3>
+          <p>Haftanın ortasında enerji toplamak için 18 Mart Stadyumu'nda buluşuyoruz. Yorucu bir günün ardından en iyi ilaç: koşu ve topluluk.</p>
+          <div class="session-tags">
+            <span class="tag">Tüm Seviyeler</span>
+            <span class="tag">Ücretsiz</span>
+            <span class="tag">18 Mart Stadyumu</span>
+          </div>
+        </div>
+        <div class="session-time">20:00</div>
+      </div>
+
+      <div class="session">
+        <div class="session-day">
+          Cumartesi
+          <span class="day-sub">Her hafta</span>
+        </div>
+        <div class="session-body">
+          <h3>Açık Alan Koşusu</h3>
+          <p>Haftanın en keyifli koşusu! Çanakkale'nin farklı güzergahlarında açık havada güneşle birlikte başlıyoruz. Rota her hafta değişir — sürpriz her zaman vardır.</p>
+          <div class="session-tags">
+            <span class="tag">Tüm Seviyeler</span>
+            <span class="tag">Ücretsiz</span>
+            <span class="tag">Açık Alan</span>
+            <span class="tag">Rota Değişken</span>
+          </div>
+        </div>
+        <div class="session-time">08:00</div>
+      </div>
+    </div>
+
+    <div class="rules">
+      <h3>Kulüp Kuralları</h3>
+      <div class="rules-list">
+        <div class="rule">
+          <span class="rule-num">01</span>
+          <span>Yarış yok, tempo baskısı yok. Herkes kendi hızında koşar.</span>
+        </div>
+        <div class="rule">
+          <span class="rule-num">02</span>
+          <span>Katılım tamamen ücretsizdir. Hiçbir ücret talep edilmez.</span>
+        </div>
+        <div class="rule">
+          <span class="rule-num">03</span>
+          <span>Koşu öncesi ısınma ve sonrası soğuma hep birlikte yapılır.</span>
+        </div>
+        <div class="rule">
+          <span class="rule-num">04</span>
+          <span>Saygılı ve kapsayıcı bir ortam — herkes davetlidir.</span>
+        </div>
+        <div class="rule">
+          <span class="rule-num">05</span>
+          <span>Güncel duyurular için Instagram'ı takip edin: <a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">@spqrrunclub</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.png" alt="SPQR Run Club" />
+      <h4>SPQR RUN CLUB</h4>
+      <p>S.P.Q.R.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Keşfet</h5>
+      <ul>
+        <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
+        <li><a href="antrenmanlar.html">Antrenmanlar</a></li>
+        <li><a href="bulusma.html">Buluşma</a></li>
+        <li><a href="takvim.html">Takvim</a></li>
+        <li><a href="galeri.html">Galeri</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Katıl</h5>
+      <ul>
+        <li><a href="index.html#kayit">Kayıt Ol</a></li>
+        <li><a href="index.html#iletisim">İletişim</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Sosyal</h5>
+      <ul>
+        <li><a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> SPQR Run Club · Çanakkale</span>
+    <span class="tag">S.P.Q.R.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
