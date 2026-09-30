@@ -1367,50 +1367,264 @@
     color: #ff6b6b;
   }
 
-  /* ============ PROFİL VE DASHBOARD STİLLERİ ============ */
-  .profile-wrap {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 120px 2rem 80px;
-  }
-  .profile-grid {
+  /* ============ PROFİL VE DASHBOARD STİLLERİ (BEEKY BİREBİR) ============ */
+  .profil-wrap { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+  .profil-layout {
     display: grid;
-    grid-template-columns: 1fr 1.3fr;
+    grid-template-columns: 5fr 7fr;
     gap: 4rem;
     align-items: start;
-    margin-top: 2.5rem;
+    margin-top: 1.5rem;
   }
-  @media (max-width: 900px) {
-    .profile-grid { grid-template-columns: 1fr; gap: 3rem; }
+  @media (max-width: 1000px) {
+    .profil-layout { grid-template-columns: 1fr; gap: 3rem; }
   }
-  .profile-card {
-    background: #FFFFFF;
-    border: 1px solid var(--line);
+
+  /* Sağlık beyanı banner */
+  .saglik-banner {
+    background: #FFF9ED;
+    border: 1.5px solid #E6B04C;
     border-radius: 4px;
-    padding: 2.5rem;
+    padding: 1.35rem 1.75rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 20px rgba(230, 176, 76, 0.08);
   }
-  .profile-rows {
+  .saglik-banner-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    color: var(--black);
     display: flex;
-    flex-direction: column;
-    divide-y: 1px solid var(--line);
-    margin-bottom: 2rem;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .profile-row {
+  .saglik-banner-text {
+    font-size: 0.88rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .saglik-consent {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.84rem;
+    line-height: 1.6;
+    cursor: pointer;
+  }
+  .saglik-consent input {
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+    accent-color: var(--black);
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Profil bilgi satırları */
+  .profil-list { margin-bottom: 2rem; }
+  .profil-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
+    gap: 1rem;
     padding: 0.9rem 0;
     border-bottom: 1px solid var(--line);
-    font-size: 0.92rem;
   }
-  .profile-row:last-child { border-bottom: none; }
-  .profile-row .k {
-    font-weight: 600;
-    opacity: 0.55;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
+  .profil-row:first-child { border-top: 1px solid var(--line); }
+  .profil-row .k {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
+    color: var(--black);
+    font-weight: 700;
+    opacity: 0.6;
+    flex-shrink: 0;
   }
-  .profile-row .v { font-weight: 600; color: var(--black); }
+  .profil-row .v {
+    font-weight: 700;
+    text-align: right;
+    word-break: break-word;
+    color: var(--black);
+  }
+
+  /* Profil formu */
+  .profil-form {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .profil-form .field label { color: var(--black); opacity: 0.85; }
+  .profil-form .field input,
+  .profil-form .field select {
+    border-bottom-color: var(--line);
+    color: var(--black);
+  }
+  .profil-form .field input:focus,
+  .profil-form .field select:focus { border-bottom-color: var(--black); }
+  .profil-edit-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+
+  /* Yarış kartları (Profil içi) */
+  .race-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.35rem;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--black);
+    margin-bottom: 1rem;
+    background: #FFFFFF;
+    border-radius: 2px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .race-card:hover {
+    border-color: var(--black);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+  }
+  .race-card.joined {
+    border-left-color: #2a7a50;
+    background: rgba(42,122,80,0.04);
+  }
+
+  .race-date {
+    background: var(--black);
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.35rem;
+    font-family: var(--display);
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+    width: 56px;
+    min-height: 56px;
+    flex-shrink: 0;
+  }
+  .race-date .d { font-size: 1.6rem; }
+  .race-date .m { font-size: 0.68rem; letter-spacing: 0.1em; margin-top: 2px; text-transform: uppercase; }
+
+  .race-body { flex: 1; min-width: 0; }
+  .race-name {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+  .race-meta { font-size: 0.8rem; opacity: 0.65; letter-spacing: 0.02em; }
+  .race-kontenjan {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #2a7a50;
+    margin-top: 0.3rem;
+    letter-spacing: 0.03em;
+  }
+  .race-kontenjan.dolu { color: #b45000; }
+
+  /* Mesafe seçici */
+  .race-dist-picker {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .race-pick-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .race-dist-opts { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .race-dist-opt {
+    background: transparent;
+    border: 1.5px solid var(--black);
+    color: var(--black);
+    padding: 0.3rem 0.75rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .race-dist-opt:hover { background: var(--black); color: var(--cream); }
+  .race-cancel-dist {
+    background: none;
+    border: none;
+    font-size: 0.82rem;
+    opacity: 0.55;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* Sağ kontroller */
+  .race-ctrl {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+  .race-joined-info {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #2a7a50;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .race-join-btn {
+    background: var(--black);
+    border: 1.5px solid var(--black);
+    color: var(--cream);
+    padding: 0.55rem 1.15rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+  .race-join-btn:hover { background: transparent; color: var(--black); }
+  .race-join-btn.leave {
+    background: transparent;
+    border-color: #2a7a50;
+    color: #2a7a50;
+  }
+  .race-join-btn.leave:hover {
+    background: #ff4d4d;
+    border-color: #ff4d4d;
+    color: #fff;
+  }
+  .race-saglik-warn {
+    font-size: 0.82rem;
+    color: #b45000;
+    font-style: italic;
+    opacity: 0.9;
+    text-align: right;
+  }
+
+  @media (max-width: 650px) {
+    .race-card { flex-wrap: wrap; gap: 0.85rem; padding: 1rem; }
+    .race-ctrl { width: 100%; flex-direction: row; justify-content: flex-end; }
+  }
+
 
 

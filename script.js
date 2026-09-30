@@ -592,110 +592,373 @@ window.handleGunChange = function (el) {
 // ============================================================
 // 13. PROFİL SAYFASI (profil.html)
 // ============================================================
-(function () {
-  const profileContainer = document.getElementById("profileSection");
-  if (!profileContainer || !sb) return;
+(async function () {
+  const page = document.getElementById("profilPage") || document.getElementById("profileSection");
+  if (!page || !sb) return;
 
-  async function initProfile() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) {
-      window.location.href = "giris.html";
-      return;
-    }
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = "giris.html";
+    return;
+  }
 
-    const user = session.user;
-    const meta = user.user_metadata || {};
+  const userId = session.user.id;
+  let profile = {
+    ad_soyad: session.user.user_metadata?.ad_soyad || "",
+    telefon: session.user.user_metadata?.telefon || "",
+    dogum_tarihi: session.user.user_metadata?.dogum_tarihi || "",
+    tempo_seviyesi: session.user.user_metadata?.tempo_seviyesi || "",
+    katilim_tercihi: session.user.user_metadata?.katilim_tercihi || "",
+    bulten_izni: session.user.user_metadata?.bulten_izni ?? true,
+    saglik_onay: !!(session.user.user_metadata?.saglik_onay || localStorage.getItem("spqr_saglik_onay") === "true")
+  };
 
-    const setText = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val || "—";
-    };
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || "—"; };
+  const setVal  = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ""; };
 
-    // Temel bilgiler
-    setText("pEmail", user.email);
-    setText("pAd", meta.ad_soyad);
-    setText("pTel", meta.telefon);
-    setText("pTempo", meta.tempo_seviyesi);
-    setText("pKatilim", meta.katilim_tercihi);
+  // --- Profil yükle & ekrana yaz ---
+  async function loadProfile() {
+    setText("pEmail", session.user.email || "—");
 
-    // Supabase profiles tablosundan kontrol
     try {
-      const { data } = await sb.from("profiles").select("*").eq("id", user.id).single();
-      if (data) {
-        if (data.ad_soyad) setText("pAd", data.ad_soyad);
-        if (data.telefon) setText("pTel", data.telefon);
-        if (data.tempo_seviyesi) setText("pTempo", data.tempo_seviyesi);
-        if (data.katilim_tercihi) setText("pKatilim", data.katilim_tercihi);
+      const { data, error } = await sb.from("profiles").select("*").eq("id", userId).single();
+      if (!error && data) {
+        profile = { ...profile, ...data };
       }
-    } catch (_e) {}
+    } catch (_err) {}
 
-    // Düzenleme modu
-    const editBtn = document.getElementById("editBtn");
-    const editWrap = document.getElementById("profilEditWrap");
-    const viewWrap = document.getElementById("profilView");
-    const cancelBtn = document.getElementById("editCancel");
-    const editForm = document.getElementById("profilEditForm");
+    setText("pAd",      profile.ad_soyad        || "—");
+    setText("pTel",     profile.telefon          || "—");
+    setText("pYas",     profile.dogum_tarihi     || "—");
+    setText("pTempo",   profile.tempo_seviyesi   || "—");
+    setText("pKatilim", profile.katilim_tercihi  || "—");
+    setText("pBulten",  profile.bulten_izni ? "Evet" : "Hayır");
 
-    if (editBtn && editWrap && viewWrap) {
-      editBtn.onclick = () => {
-        viewWrap.hidden = true;
-        editWrap.hidden = false;
-        document.getElementById("eAd").value = document.getElementById("pAd").textContent.replace("—", "");
-        document.getElementById("eTel").value = document.getElementById("pTel").textContent.replace("—", "");
-        document.getElementById("eTempo").value = document.getElementById("pTempo").textContent.replace("—", "");
-        document.getElementById("eKatilim").value = document.getElementById("pKatilim").textContent.replace("—", "");
-      };
-
-      if (cancelBtn) {
-        cancelBtn.onclick = () => {
-          editWrap.hidden = true;
-          viewWrap.hidden = false;
-        };
-      }
-
-      if (editForm) {
-        editForm.onsubmit = async (e) => {
-          e.preventDefault();
-          const ad = document.getElementById("eAd").value.trim();
-          const tel = document.getElementById("eTel").value.trim();
-          const tempo = document.getElementById("eTempo").value;
-          const katilim = document.getElementById("eKatilim").value;
-          const status = document.getElementById("editStatus");
-
-          status.textContent = "Kaydediliyor...";
-          status.className = "form-status";
-
-          await sb.auth.updateUser({
-            data: { ad_soyad: ad, telefon: tel, tempo_seviyesi: tempo, katilim_tercihi: katilim }
-          });
-
-          try {
-            await sb.from("profiles").upsert({
-              id: user.id,
-              ad_soyad: ad,
-              telefon: tel,
-              tempo_seviyesi: tempo,
-              katilim_tercihi: katilim
-            });
-          } catch (_e) {}
-
-          setText("pAd", ad);
-          setText("pTel", tel);
-          setText("pTempo", tempo);
-          setText("pKatilim", katilim);
-
-          status.textContent = "✓ Bilgilerin güncellendi!";
-          status.className = "form-status ok show";
-          setTimeout(() => {
-            editWrap.hidden = true;
-            viewWrap.hidden = false;
-            status.textContent = "";
-            status.className = "form-status";
-          }, 1000);
-        };
-      }
+    const saglikBanner = document.getElementById("saglikBanner");
+    if (saglikBanner) {
+      saglikBanner.hidden = !!profile.saglik_onay;
     }
   }
 
-  initProfile();
+  await loadProfile();
+
+  // --- Sağlık beyanı onay ---
+  const saglikKabulBtn = document.getElementById("saglikKabulBtn");
+  if (saglikKabulBtn) {
+    saglikKabulBtn.addEventListener("click", async function () {
+      const cb = document.getElementById("saglikCb");
+      const st = document.getElementById("saglikStatus");
+      if (!cb.checked) {
+        st.textContent = "Lütfen beyanı onaylayın.";
+        st.className = "form-status err show";
+        return;
+      }
+      saglikKabulBtn.disabled = true;
+      saglikKabulBtn.textContent = "KAYDEDİLİYOR...";
+
+      try {
+        await sb.from("profiles").update({ saglik_onay: true }).eq("id", userId);
+      } catch (_e) {}
+
+      try {
+        await sb.auth.updateUser({ data: { saglik_onay: true } });
+      } catch (_e) {}
+
+      localStorage.setItem("spqr_saglik_onay", "true");
+      profile = { ...profile, saglik_onay: true };
+
+      saglikKabulBtn.disabled = false;
+      saglikKabulBtn.textContent = "ONAYLA →";
+
+      const saglikBanner = document.getElementById("saglikBanner");
+      if (saglikBanner) saglikBanner.hidden = true;
+
+      if (typeof renderRacesFunc === "function") {
+        renderRacesFunc();
+      }
+    });
+  }
+
+  // --- Düzenleme toggle ---
+  const editBtn    = document.getElementById("editBtn");
+  const editCancel = document.getElementById("editCancel");
+  const profilView = document.getElementById("profilView");
+  const editWrap   = document.getElementById("profilEditWrap");
+  const editStatus = document.getElementById("editStatus");
+
+  function openEdit() {
+    if (profile) {
+      setVal("eAd",      profile.ad_soyad);
+      setVal("eTel",     profile.telefon);
+      setVal("eYas",     profile.dogum_tarihi);
+      setVal("eTempo",   profile.tempo_seviyesi);
+      setVal("eKatilim", profile.katilim_tercihi);
+      const bultenEl = document.getElementById("eBulten");
+      if (bultenEl) bultenEl.checked = !!profile.bulten_izni;
+    }
+    profilView.hidden = true;
+    editWrap.hidden   = false;
+    const first = editWrap.querySelector("input, select");
+    if (first) first.focus();
+  }
+
+  function closeEdit() {
+    profilView.hidden = false;
+    editWrap.hidden   = true;
+    if (editStatus) { editStatus.className = "form-status"; editStatus.textContent = ""; }
+  }
+
+  if (editBtn)    editBtn.addEventListener("click", openEdit);
+  if (editCancel) editCancel.addEventListener("click", closeEdit);
+
+  // --- Profil güncelleme ---
+  const editForm = document.getElementById("profilEditForm");
+  if (editForm && editStatus) {
+    editForm.addEventListener("submit", async function (ev) {
+      ev.preventDefault();
+      const btn = editForm.querySelector("button[type=submit]");
+      btn.disabled = true;
+      btn.textContent = "KAYDEDİLİYOR...";
+      editStatus.className = "form-status";
+
+      const updates = {
+        ad_soyad:        document.getElementById("eAd").value.trim(),
+        telefon:         document.getElementById("eTel").value.trim() || null,
+        dogum_tarihi:    document.getElementById("eYas").value || null,
+        tempo_seviyesi:  document.getElementById("eTempo").value || null,
+        katilim_tercihi: document.getElementById("eKatilim").value || null,
+        bulten_izni:     document.getElementById("eBulten").checked
+      };
+
+      if (!updates.ad_soyad) {
+        editStatus.textContent = "Ad Soyad boş bırakılamaz.";
+        editStatus.className = "form-status err show";
+        btn.disabled = false; btn.textContent = "KAYDET →";
+        return;
+      }
+
+      try {
+        await sb.from("profiles").upsert({ id: userId, ...updates });
+      } catch (_e) {}
+
+      try {
+        await sb.auth.updateUser({ data: updates });
+      } catch (_e) {}
+
+      btn.disabled = false;
+      btn.textContent = "KAYDET →";
+
+      profile = { ...profile, ...updates };
+      await loadProfile();
+      closeEdit();
+    });
+  }
+
+  // --- Yarış Takvimi ---
+  const MONTHS = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+
+  const defaultRaces = [
+    {
+      id: "spqr-night-2026",
+      isim: "SPQR Gece Koşusu 2026",
+      tarih: "2026-10-15",
+      konum: "Kordon Boyu · Çanakkale",
+      mesafeler: ["5K", "10K"],
+      kontenjan: 50
+    },
+    {
+      id: "canakkale-2026",
+      isim: "Çanakkale Yarı Maratonu 2026",
+      tarih: "2026-10-18",
+      konum: "Kordon & Merkez · Çanakkale",
+      mesafeler: ["10K", "21K"],
+      kontenjan: 100
+    },
+    {
+      id: "istanbul-2026",
+      isim: "İstanbul Maratonu 2026",
+      tarih: "2026-11-08",
+      konum: "Kıtalararası · İstanbul",
+      mesafeler: ["15K", "42K"],
+      kontenjan: 30
+    },
+    {
+      id: "troya-2027",
+      isim: "18 Mart Troya Zafer Koşusu 2027",
+      tarih: "2027-03-18",
+      konum: "Troya Tarihi Parkur · Çanakkale",
+      mesafeler: ["10K", "21K"],
+      kontenjan: 80
+    },
+    {
+      id: "gelibolu-2027",
+      isim: "Gelibolu Barış Maratonu 2027",
+      tarih: "2027-04-25",
+      konum: "Eceabat & Yarımada · Çanakkale",
+      mesafeler: ["10K", "21K", "42K"],
+      kontenjan: 120
+    }
+  ];
+
+  let renderRacesFunc = null;
+
+  async function loadRaces() {
+    const listEl = document.getElementById("racesList");
+    if (!listEl) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    let races = defaultRaces;
+    let joined = {};
+    let entryCounts = {};
+
+    try {
+      const [racesRes, entriesRes] = await Promise.all([
+        sb.from("races").select("*").order("tarih"),
+        sb.from("race_entries").select("race_id, mesafe_secimi").eq("user_id", userId)
+      ]);
+
+      if (!racesRes.error && racesRes.data && racesRes.data.length > 0) {
+        const _all = racesRes.data;
+        races = [
+          ..._all.filter(r => r.tarih >= today).sort((a, b) => a.tarih.localeCompare(b.tarih)),
+          ..._all.filter(r => r.tarih <  today).sort((a, b) => b.tarih.localeCompare(a.tarih))
+        ];
+      }
+
+      if (!entriesRes.error && entriesRes.data) {
+        entriesRes.data.forEach(e => { joined[e.race_id] = { mesafe: e.mesafe_secimi }; });
+      }
+    } catch (_err) {}
+
+    // Yerel depolama desteği
+    const localJoined = JSON.parse(localStorage.getItem("spqr_joined_races") || "[]");
+    localJoined.forEach(id => {
+      if (!joined[id]) joined[id] = { mesafe: null };
+    });
+
+    const pickerOpen = new Set();
+
+    function renderRaces() {
+      listEl.innerHTML = races.map(race => {
+        const past       = race.tarih < today;
+        const isJoined   = !!joined[race.id];
+        const myDist     = isJoined ? joined[race.id].mesafe : null;
+        const hasDists   = Array.isArray(race.mesafeler) && race.mesafeler.length > 0;
+        const showPicker = !past && !isJoined && pickerOpen.has(race.id);
+        const katilimci  = entryCounts[race.id] || 0;
+        const kontenjan  = race.kontenjan || null;
+        const dolu       = kontenjan !== null && katilimci >= kontenjan && !isJoined;
+
+        const d = new Date(race.tarih + "T00:00:00");
+        const metaParts = [race.konum, hasDists ? race.mesafeler.join(" / ") : null].filter(Boolean);
+
+        const kontenjanHtml = kontenjan !== null && !past
+          ? `<div class="race-kontenjan ${dolu ? "dolu" : ""}">${dolu ? "Kontenjan doldu" : `${kontenjan - katilimci} yer kaldı`}</div>`
+          : "";
+
+        const pickerHtml = showPicker ? `
+          <div class="race-dist-picker">
+            <span class="race-pick-label">Mesafe:</span>
+            <div class="race-dist-opts">
+              ${race.mesafeler.map(m =>
+                `<button class="race-dist-opt" data-action="pick" data-race-id="${race.id}" data-dist="${m}">${m}</button>`
+              ).join("")}
+            </div>
+            <button class="race-cancel-dist" data-action="cancel" data-race-id="${race.id}">İptal</button>
+          </div>` : "";
+
+        let ctrlHtml = "";
+        if (!past) {
+          if (!profile?.saglik_onay) {
+            ctrlHtml = `<span class="race-saglik-warn">Yarışa katılmak için sağlık beyanını onayla</span>`;
+          } else if (isJoined) {
+            ctrlHtml = `
+              <div class="race-joined-info">✓ Katılıyorum${myDist ? ` · ${myDist}` : ""}</div>
+              <button class="race-join-btn leave" data-action="leave" data-race-id="${race.id}">Vazgeç</button>`;
+          } else if (dolu) {
+            ctrlHtml = `<span class="race-saglik-warn">Kontenjan doldu</span>`;
+          } else if (!showPicker) {
+            ctrlHtml = `<button class="race-join-btn" data-action="join" data-race-id="${race.id}">Katılacağım →</button>`;
+          }
+        }
+
+        return `
+          <div class="race-card ${isJoined ? "joined" : ""} ${past ? "race-past" : ""}" data-race-id="${race.id}">
+            <div class="race-date"><span class="d">${d.getDate()}</span><span class="m">${MONTHS[d.getMonth()]}</span></div>
+            <div class="race-body">
+              <div class="race-name">${race.isim}</div>
+              ${metaParts.length ? `<div class="race-meta">${metaParts.join(" · ")}</div>` : ""}
+              ${kontenjanHtml}
+              ${pickerHtml}
+            </div>
+            <div class="race-ctrl">${ctrlHtml}</div>
+          </div>`;
+      }).join("");
+    }
+
+    renderRacesFunc = renderRaces;
+    renderRaces();
+
+    listEl.addEventListener("click", async function (ev) {
+      const target = ev.target.closest("[data-action]");
+      if (!target || target.disabled) return;
+
+      const action = target.dataset.action;
+      const raceId = target.dataset.raceId;
+      const race   = races.find(r => r.id === raceId);
+      if (!race) return;
+
+      const hasDists = Array.isArray(race.mesafeler) && race.mesafeler.length > 0;
+      target.disabled = true;
+
+      function updateLocalJoined(add, id) {
+        let stored = JSON.parse(localStorage.getItem("spqr_joined_races") || "[]");
+        if (add) {
+          if (!stored.includes(id)) stored.push(id);
+        } else {
+          stored = stored.filter(x => x !== id);
+        }
+        localStorage.setItem("spqr_joined_races", JSON.stringify(stored));
+      }
+
+      if (action === "join") {
+        if (hasDists) {
+          pickerOpen.add(raceId);
+          renderRaces();
+        } else {
+          try {
+            await sb.from("race_entries").upsert({ user_id: userId, race_id: raceId, mesafe_secimi: null }, { onConflict: "user_id,race_id" });
+          } catch (_e) {}
+          updateLocalJoined(true, raceId);
+          if (!joined[raceId]) entryCounts[raceId] = (entryCounts[raceId] || 0) + 1;
+          joined[raceId] = { mesafe: null };
+          renderRaces();
+        }
+      } else if (action === "pick") {
+        const dist = target.dataset.dist;
+        try {
+          await sb.from("race_entries").upsert({ user_id: userId, race_id: raceId, mesafe_secimi: dist }, { onConflict: "user_id,race_id" });
+        } catch (_e) {}
+        updateLocalJoined(true, raceId);
+        if (!joined[raceId]) entryCounts[raceId] = (entryCounts[raceId] || 0) + 1;
+        joined[raceId] = { mesafe: dist };
+        pickerOpen.delete(raceId);
+        renderRaces();
+      } else if (action === "cancel") {
+        pickerOpen.delete(raceId);
+        renderRaces();
+      } else if (action === "leave") {
+        try {
+          await sb.from("race_entries").delete().eq("user_id", userId).eq("race_id", raceId);
+        } catch (_e) {}
+        updateLocalJoined(false, raceId);
+        entryCounts[raceId] = Math.max(0, (entryCounts[raceId] || 0) - 1);
+        delete joined[raceId];
+        renderRaces();
+      }
+    });
+  }
+
+  await loadRaces();
 })();

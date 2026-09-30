@@ -10,26 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .race-badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.6rem;
-      border-radius: 2px;
-      background: var(--black);
-      color: var(--cream);
-    }
-    .profile-subcard {
-      background: #FFFFFF;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-  </style>
+
 </head>
 <body>
 
@@ -54,131 +35,129 @@
 </nav>
 
 <!-- ============ PROFİL ALANI ============ -->
-<main class="profile-wrap" id="profileSection">
-  <div class="section-head">
-    <span class="section-num">ÜYE PANELİ</span>
-    <h1 class="section-title">Koşucu <em>profili.</em></h1>
-  </div>
+<main id="profilPage" class="profile-wrap" style="padding-top:2rem;min-height:75vh;">
+  <section class="subpage-section" style="padding-top:0;">
+    <div class="container profil-wrap" style="padding:0;">
 
-  <div class="profile-grid">
-    <!-- SOL: HESAP BİLGİLERİ -->
-    <div>
-      <div class="profile-card">
-        <h3 style="font-family:var(--display);font-size:1.6rem;font-weight:900;text-transform:uppercase;margin-bottom:1.5rem;">
-          Hesap <em>Bilgilerin</em>
-        </h3>
+      <a class="back-link" href="index.html">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Ana Sayfa
+      </a>
 
-        <!-- Görüntüleme Modu -->
-        <div id="profilView">
-          <div class="profile-rows">
-            <div class="profile-row">
-              <span class="k">E-POSTA</span>
-              <span class="v" id="pEmail">—</span>
+      <!-- Sağlık beyanı banner (saglik_onay false ise gösterilir) -->
+      <div id="saglikBanner" hidden>
+        <div class="saglik-banner">
+          <div class="saglik-banner-title">⚠ Sağlık Beyanı Gerekli</div>
+          <p class="saglik-banner-text">Etkinliklere katılabilmek için aşağıdaki sağlık beyanını onaylaman gerekiyor.</p>
+          <label class="saglik-consent">
+            <input type="checkbox" id="saglikCb" />
+            <span><strong>Sağlık Beyanı:</strong> Bilinen herhangi bir kalp-damar hastalığım, kronik rahatsızlığım veya koşuya engel teşkil edecek fiziksel bir kısıtlılığım bulunmamaktadır ya da katılım için doktor onayı aldım. Etkinlik sırasında yaşanabilecek sağlık sorunlarının sorumluluğunun tarafıma ait olduğunu ve SPQR Run Club'ın hukuki sorumluluğu bulunmadığını kabul ediyorum.</span>
+          </label>
+          <button class="btn" id="saglikKabulBtn" type="button" style="margin-top:1rem;">ONAYLA →</button>
+          <div class="form-status" id="saglikStatus" style="margin-top:.75rem;"></div>
+        </div>
+      </div>
+
+      <div class="profil-layout">
+
+        <!-- ====== SOL: PROFİL BİLGİLERİ ====== -->
+        <div>
+          <div class="section-head">
+            <span class="section-num">01 / PROFİLİM</span>
+            <h2 class="section-title">Hesap <em>bilgilerin.</em></h2>
+          </div>
+
+          <!-- Görüntüleme modu -->
+          <div id="profilView">
+            <div class="profil-list">
+              <div class="profil-row"><span class="k">E-posta</span><span class="v" id="pEmail">—</span></div>
+              <div class="profil-row"><span class="k">Ad Soyad</span><span class="v" id="pAd">—</span></div>
+              <div class="profil-row"><span class="k">Telefon</span><span class="v" id="pTel">—</span></div>
+              <div class="profil-row"><span class="k">Doğum Tarihi</span><span class="v" id="pYas">—</span></div>
+              <div class="profil-row"><span class="k">Tempo</span><span class="v" id="pTempo">—</span></div>
+              <div class="profil-row"><span class="k">Katılım</span><span class="v" id="pKatilim">—</span></div>
+              <div class="profil-row"><span class="k">Bülten</span><span class="v" id="pBulten">—</span></div>
             </div>
-            <div class="profile-row">
-              <span class="k">AD SOYAD</span>
-              <span class="v" id="pAd">—</span>
-            </div>
-            <div class="profile-row">
-              <span class="k">TELEFON</span>
-              <span class="v" id="pTel">—</span>
-            </div>
-            <div class="profile-row">
-              <span class="k">TEMPO SEVİYESİ</span>
-              <span class="v" id="pTempo">—</span>
-            </div>
-            <div class="profile-row">
-              <span class="k">KATILIM GÜNLERİ</span>
-              <span class="v" id="pKatilim">—</span>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+              <button class="btn" id="editBtn" type="button">Düzenle →</button>
+              <a href="sifremi-unuttum.html" class="btn-ghost" style="text-decoration:none;">ŞİFRE DEĞİŞTİR</a>
             </div>
           </div>
 
-          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
-            <button class="btn" id="editBtn" type="button">BİLGİLERİ DÜZENLE →</button>
-            <a href="sifremi-unuttum.html" class="btn-ghost" style="text-decoration:none;">ŞİFRE DEĞİŞTİR</a>
+          <!-- Düzenleme modu -->
+          <div id="profilEditWrap" hidden>
+            <form class="form profil-form" id="profilEditForm" novalidate>
+
+              <div class="field full">
+                <label for="eAd">Ad Soyad *</label>
+                <input id="eAd" name="ad_soyad" type="text" required placeholder="Adın ve soyadın" />
+              </div>
+
+              <div class="field full">
+                <label for="eTel">Telefon</label>
+                <input id="eTel" name="telefon" type="tel" placeholder="05XX XXX XX XX" />
+              </div>
+
+              <div class="field full">
+                <label for="eYas">Doğum Tarihi</label>
+                <input id="eYas" name="dogum_tarihi" type="date" max="" />
+              </div>
+
+              <div class="field full">
+                <label for="eTempo">Tempo Seviyesi</label>
+                <select id="eTempo" name="tempo_seviyesi">
+                  <option value="">Hangi tempoda koşuyorsun?</option>
+                  <option>İlk kez koşacağım</option>
+                  <option>Rahat tempo — 6:00+ dk/km</option>
+                  <option>Orta tempo — 5:00-6:00 dk/km</option>
+                  <option>Hızlı tempo — 4:00-5:00 dk/km</option>
+                  <option>Yarış temposu — 4:00 dk/km altı</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="eKatilim">Katılım Tercihi</label>
+                <select id="eKatilim" name="katilim_tercihi">
+                  <option value="">Seçiniz</option>
+                  <option>Pazartesi 20:00</option>
+                  <option>Perşembe 20:00</option>
+                  <option>Cumartesi 08:00</option>
+                  <option>Tümü</option>
+                </select>
+              </div>
+
+              <div class="field full" style="padding-top: 0.5rem;">
+                <label class="check" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;">
+                  <input type="checkbox" name="bulten_izni" id="eBulten" />
+                  <span>E-posta duyurularını almak istiyorum</span>
+                </label>
+              </div>
+
+              <div class="form-status" id="editStatus"></div>
+
+              <div class="profil-edit-actions">
+                <button class="btn" type="submit">KAYDET →</button>
+                <button class="btn-ghost" type="button" id="editCancel">İptal</button>
+              </div>
+
+            </form>
           </div>
         </div>
 
-        <!-- Düzenleme Modu -->
-        <div id="profilEditWrap" hidden>
-          <form class="form" id="profilEditForm" novalidate>
-            <div class="field full">
-              <label for="eAd">Ad Soyad *</label>
-              <input id="eAd" name="ad_soyad" type="text" required />
-            </div>
-            <div class="field full">
-              <label for="eTel">Telefon</label>
-              <input id="eTel" name="telefon" type="tel" />
-            </div>
-            <div class="field full">
-              <label for="eTempo">Tempo Seviyesi</label>
-              <select id="eTempo" name="tempo_seviyesi" class="modal-select">
-                <option value="">Seçiniz</option>
-                <option>Yeni Başlayan (5–7 dk/km)</option>
-                <option>Orta Seviye (4:30–5:30 dk/km)</option>
-                <option>İleri Seviye (&lt;4:30 dk/km)</option>
-              </select>
-            </div>
-            <div class="field full">
-              <label for="eKatilim">Katılım Tercihi</label>
-              <input id="eKatilim" name="katilim_tercihi" type="text" placeholder="Örn: Pazartesi, Perşembe" />
-            </div>
-
-            <div class="form-status" id="editStatus" style="margin-top:1rem;"></div>
-
-            <div style="display:flex;gap:1rem;margin-top:1.5rem;">
-              <button class="btn" type="submit">KAYDET →</button>
-              <button class="btn-ghost" type="button" id="editCancel">İptal</button>
-            </div>
-          </form>
+        <!-- ====== SAĞ: YARIŞ TAKVİMİ ====== -->
+        <div>
+          <div class="section-head">
+            <span class="section-num">02 / YAKLAŞAN ETKİNLİKLER</span>
+            <h2 class="section-title">Etkinliklere <em>kaydol.</em></h2>
+          </div>
+          <div id="racesList">
+            <p style="opacity:0.55; font-size:0.9rem;">Etkinlikler yükleniyor...</p>
+          </div>
         </div>
 
       </div>
     </div>
-
-    <!-- SAĞ: ETKİNLİKLER VE PROGRAM -->
-    <div>
-      <div class="profile-subcard">
-        <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:900;text-transform:uppercase;margin-bottom:0.75rem;">
-          Haftalık Antrenman <em>Programın</em>
-        </h3>
-        <p style="font-size:0.9rem;opacity:0.75;line-height:1.6;margin-bottom:1.5rem;">
-          SPQR Run Club ile haftada 3 gün düzenli koşuyoruz. Herhangi bir antrenmana katılmak için randevu gerekmez; stadyumda veya buluşma noktasında hazır olman yeterli!
-        </p>
-
-        <div style="display:flex;flex-direction:column;gap:1rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--cream);border-radius:3px;">
-            <div>
-              <strong style="font-size:0.92rem;display:block;">Pazartesi · 20:00</strong>
-              <span style="font-size:0.78rem;opacity:0.6;">18 Mart Stadyumu · Pist Antrenmanı</span>
-            </div>
-            <span class="race-badge">STADYUM</span>
-          </div>
-
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--cream);border-radius:3px;">
-            <div>
-              <strong style="font-size:0.92rem;display:block;">Perşembe · 20:00</strong>
-              <span style="font-size:0.78rem;opacity:0.6;">18 Mart Stadyumu · Tempo Koşusu</span>
-            </div>
-            <span class="race-badge">STADYUM</span>
-          </div>
-
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--cream);border-radius:3px;">
-            <div>
-              <strong style="font-size:0.92rem;display:block;">Cumartesi · 08:00</strong>
-              <span style="font-size:0.78rem;opacity:0.6;">Kordon / Barış Kordonu · Uzun Koşu</span>
-            </div>
-            <span class="race-badge" style="background:#2a7a50;">AÇIK ALAN</span>
-          </div>
-        </div>
-
-        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
-          <a href="takvim.html" class="btn" style="text-decoration:none;">YARIŞ TAKVİMİNE GİT →</a>
-          <a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener" class="btn-ghost" style="text-decoration:none;">INSTAGRAM TOPLULUĞU</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  </section>
 </main>
 
 <!-- ============ FOOTER ============ -->
