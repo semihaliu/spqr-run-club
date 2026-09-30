@@ -4,10 +4,40 @@
    ============================================================ */
 
 // ============================================================
-// 1. SİTE PANELİ / GEÇİŞ DUVARI (GATEKEEPER)
+// 1. SUPABASE BAĞLANTISI (TÜM SAYFALARDA ORTAK)
+// ============================================================
+const SUPABASE_URL = "https://akqpdjdgsgwdhrdpgacl.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcXBkamRnc2d3ZGhyZHBnYWNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDQzODcsImV4cCI6MjEwNjI4MDM4N30.xmAyFGoA3297AjHtTDpfcbdBsKpXdtN0BtxHlDGUriU";
+
+const sb = (typeof window.supabase !== "undefined" && window.supabase.createClient)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : (typeof window.Supabase !== "undefined" && window.Supabase.createClient)
+  ? window.Supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+
+// ============================================================
+// 2. SİTE PANELİ / GEÇİŞ DUVARI (GATEKEEPER)
 // Şifre: Zs5T3ctn
 // ============================================================
 const GATE_PASSWORD = "Zs5T3ctn";
+
+// Giriş loglarını konsoldan kolayca görmek için global fonksiyon:
+window.getGirisLoglari = async function () {
+  console.log("🔍 Demo Giriş Kayıtları Alınıyor...");
+  try {
+    if (sb) {
+      const { data, error } = await sb.from("demo_giris_loglari").select("*").order("created_at", { ascending: false });
+      if (!error && data && data.length > 0) {
+        console.table(data);
+        return data;
+      }
+    }
+  } catch (_e) {}
+  const localLogs = JSON.parse(localStorage.getItem("spqr_demo_visitors") || "[]");
+  console.log("Yerel Kayıtlar:", localLogs);
+  return localLogs;
+};
 
 // Eski kalıcı kilidi temizle
 try { localStorage.removeItem("spqr_gate_unlocked"); } catch(_e) {}
@@ -32,12 +62,16 @@ function checkSiteGate() {
         <img src="logo-light.png" alt="SPQR Run Club" class="gate-logo" />
         <span class="gate-badge">GİZLİ ERİŞİM</span>
         <h1 class="gate-title">SİTE PANELİ</h1>
-        <p class="gate-desc">SPQR Run Club web sitesi şu an yapım aşamasındadır. Önizleme için lütfen erişim şifresini giriniz.</p>
+        <p class="gate-desc">SPQR Run Club web sitesi şu an yapım aşamasındadır. Önizleme için lütfen bilgilerinizi ve erişim şifresini giriniz.</p>
         
         <form class="gate-form" id="gateForm">
           <div class="gate-input-wrap">
+            <label for="gateName">Adınız Soyadınız</label>
+            <input type="text" id="gateName" class="gate-input" placeholder="Adınız Soyadınız" required autofocus autocomplete="name" />
+          </div>
+          <div class="gate-input-wrap">
             <label for="gatePass">Erişim Şifresi</label>
-            <input type="password" id="gatePass" class="gate-input" placeholder="••••••••" autofocus autocomplete="current-password" required />
+            <input type="password" id="gatePass" class="gate-input" placeholder="••••••••" autocomplete="current-password" required />
           </div>
           <button type="submit" class="gate-btn">GİRİŞ YAP →</button>
           <div class="gate-status" id="gateStatus"></div>
@@ -48,26 +82,92 @@ function checkSiteGate() {
   }
 
   const form = document.getElementById("gateForm");
-  const input = document.getElementById("gatePass");
+  const nameInput = document.getElementById("gateName");
+  const passInput = document.getElementById("gatePass");
   const status = document.getElementById("gateStatus");
+  const btn = form.querySelector("button[type=submit]");
 
-  form.onsubmit = function (e) {
+  form.onsubmit = async function (e) {
     e.preventDefault();
-    const val = input.value.trim();
-    if (val === GATE_PASSWORD) {
-      sessionStorage.setItem("spqr_gate_unlocked", "true");
-      gateEl.style.transition = "opacity 0.3s ease";
-      gateEl.style.opacity = "0";
-      setTimeout(() => {
-        gateEl.remove();
-        document.body.classList.remove("gate-locked");
-      }, 300);
-    } else {
+    const nameVal = nameInput ? nameInput.value.trim() : "";
+    const passVal = passInput ? passInput.value.trim() : "";
 
-      status.textContent = "⚠️ Hatalı şifre. Lütfen tekrar deneyin.";
-      input.value = "";
-      input.focus();
+    if (!nameVal) {
+      status.textContent = "⚠️ Lütfen adınızı ve soyadınızı giriniz.";
+      if (nameInput) nameInput.focus();
+      return;
     }
+
+    if (passVal !== GATE_PASSWORD) {
+      status.textContent = "⚠️ Hatalı şifre. Lütfen tekrar deneyin.";
+      if (passInput) {
+        passInput.value = "";
+        passInput.focus();
+      }
+      return;
+    }
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "GİRİŞ YAPILIYOR...";
+    }
+
+    // 1. IP ve Konum Bilgisi Al (En iyi çaba)
+    let ip = "—", sehir = "—", ulke = "—";
+    try {
+      const res = await fetch("https://ipapi.co/json/");
+      if (res.ok) {
+        const d = await res.json();
+        ip = d.ip || "—";
+        sehir = d.city || "—";
+        ulke = d.country_name || "—";
+      }
+    } catch (_e) {
+      try {
+        const res2 = await fetch("https://api.ipify.org?format=json");
+        if (res2.ok) {
+          const d2 = await res2.json();
+          ip = d2.ip || "—";
+        }
+      } catch (_e2) {}
+    }
+
+    // 2. Supabase 'demo_giris_loglari' tablosuna kaydet
+    try {
+      if (sb) {
+        await sb.from("demo_giris_loglari").insert({
+          ad_soyad: nameVal,
+          ip: ip,
+          sehir: sehir,
+          ulke: ulke,
+          cihaz: navigator.userAgent
+        });
+      }
+    } catch (_err) {}
+
+    // 3. Tarayıcı hafızasına da yedekle
+    try {
+      const logs = JSON.parse(localStorage.getItem("spqr_demo_visitors") || "[]");
+      logs.push({
+        ad_soyad: nameVal,
+        ip: ip,
+        sehir: sehir,
+        ulke: ulke,
+        tarih: new Date().toLocaleString("tr-TR"),
+        cihaz: navigator.userAgent
+      });
+      localStorage.setItem("spqr_demo_visitors", JSON.stringify(logs));
+    } catch (_err) {}
+
+    sessionStorage.setItem("spqr_gate_unlocked", "true");
+    sessionStorage.setItem("spqr_visitor_name", nameVal);
+
+    gateEl.style.transition = "opacity 0.3s ease";
+    gateEl.style.opacity = "0";
+    setTimeout(() => {
+      gateEl.remove();
+      document.body.classList.remove("gate-locked");
+    }, 300);
   };
 }
 
@@ -76,19 +176,6 @@ if (document.readyState === "loading") {
 } else {
   checkSiteGate();
 }
-
-
-// ============================================================
-// 2. SUPABASE BAĞLANTISI (TÜM SAYFALARDA ORTAK)
-// ============================================================
-const SUPABASE_URL = "https://akqpdjdgsgwdhrdpgacl.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcXBkamRnc2d3ZGhyZHBnYWNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDQzODcsImV4cCI6MjEwNjI4MDM4N30.xmAyFGoA3297AjHtTDpfcbdBsKpXdtN0BtxHlDGUriU";
-
-const sb = (typeof window.supabase !== "undefined" && window.supabase.createClient)
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-  : (typeof window.Supabase !== "undefined" && window.Supabase.createClient)
-  ? window.Supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-  : null;
 
 
 // ============================================================
