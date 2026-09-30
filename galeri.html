@@ -21,27 +21,32 @@
   .back-link:hover { opacity: 1; }
   .back-link svg { width: 16px; height: 16px; fill: currentColor; }
 
-  .photo { cursor: zoom-in; overflow: hidden; border-radius: 2px; }
+  .photo {
+    cursor: zoom-in;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--cream-warm);
+    position: relative;
+    aspect-ratio: 1;
+  }
+  .photo.photo-card {
+    cursor: default;
+  }
+  .photo.featured-wide {
+    grid-column: span 2;
+    aspect-ratio: 16/10;
+  }
   .photo img {
     width: 100%; height: 100%; object-fit: cover;
     display: block; transition: transform 0.4s ease;
   }
-  .photo:hover img { transform: scale(1.03); }
+  .photo:not(.photo-card):hover img { transform: scale(1.03); }
 
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
     margin-top: 2rem;
-  }
-
-  .gallery-grid .photo:first-child {
-    grid-column: span 2;
-    aspect-ratio: 16/9;
-  }
-
-  .gallery-grid .photo {
-    aspect-ratio: 1;
   }
 
   .gallery-empty {
@@ -116,9 +121,11 @@
   #lb-p { left: 0; }
   #lb-n { right: 0; }
 
-  @media (max-width: 600px) {
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .gallery-grid .photo:first-child { grid-column: span 2; }
+  @media (max-width: 768px) {
+    .gallery-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .photo.featured-wide { grid-column: span 1; aspect-ratio: 4/3; }
+    .photo { aspect-ratio: 4/3; }
+    .photo.photo-card { aspect-ratio: auto; padding: 2.25rem 1.5rem !important; }
   }
 </style>
 </head>
@@ -158,18 +165,41 @@
     </div>
 
     <div class="gallery-grid">
-      <!-- Şu an mevcut tek fotoğraf: stadyum grup fotoğrafı -->
+      <!-- 01: Toplu stadyum karesi (Geniş) -->
+      <div class="photo featured-wide">
+        <img src="hero-poster.jpg" alt="SPQR Run Club — 18 Mart Stadyumu Toplu Ekip" loading="lazy" />
+      </div>
+
+      <!-- 02: Koşucu odak / portre -->
       <div class="photo">
-        <img src="hero-poster.jpg" alt="SPQR Run Club 18 Mart Stadyumu" loading="lazy" />
+        <img src="galeri-3.png" alt="SPQR Run Club — Koşucu Odaklanması" loading="lazy" />
       </div>
-      <div class="photo" style="background:var(--cream-warm);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:var(--display);font-weight:900;font-size:1.2rem;opacity:0.2;text-transform:uppercase;">Yakında</span>
+
+      <!-- 03: Pistte buluşma ve hazırlık -->
+      <div class="photo">
+        <img src="galeri-1.png" alt="SPQR Run Club — Pistte Koşu Öncesi Brifing" loading="lazy" />
       </div>
-      <div class="photo" style="background:var(--cream-warm);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:var(--display);font-weight:900;font-size:1.2rem;opacity:0.2;text-transform:uppercase;">Yakında</span>
+
+      <!-- 04: Dinamik ısınma -->
+      <div class="photo">
+        <img src="galeri-5.jpg" alt="SPQR Run Club — Dinamik Isınma Seansı" loading="lazy" />
       </div>
-      <div class="photo" style="background:var(--cream-warm);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:var(--display);font-weight:900;font-size:1.2rem;opacity:0.2;text-transform:uppercase;">Yakında</span>
+
+      <!-- 05: Tribünler ve gece atmosferi -->
+      <div class="photo">
+        <img src="galeri-2.jpg" alt="SPQR Run Club — 18 Mart Stadyumu Tribünleri ve Koşu" loading="lazy" />
+      </div>
+
+      <!-- 06: Birlikte gece koşusu (Geniş) -->
+      <div class="photo featured-wide">
+        <img src="galeri-4.png" alt="SPQR Run Club — Gece Koşusu Pist Antrenmanı" loading="lazy" />
+      </div>
+
+      <!-- 07: Editorial Alıntı Kartı -->
+      <div class="photo photo-card" style="background:var(--black);color:var(--cream);display:flex;flex-direction:column;justify-content:center;padding:2rem;border-radius:2px;">
+        <span style="font-family:var(--display);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0.6;margin-bottom:0.75rem;">SPQR RUN CLUB</span>
+        <p style="font-family:var(--serif);font-size:1.45rem;line-height:1.25;margin:0;font-style:italic;">"Piste adımını at, gerisi kendiliğinden gelir."</p>
+        <span style="font-size:0.75rem;opacity:0.5;margin-top:1.25rem;letter-spacing:0.05em;">ÇANAKKALE · 18 MART STADYUMU</span>
       </div>
     </div>
 
