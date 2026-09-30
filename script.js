@@ -380,7 +380,7 @@ window.handleGunChange = function (el) {
             kaynak,
             notlar,
             bulten_izni: bulten,
-            saglik_onay: true
+            saglik_onay: false
           }
         }
       });
@@ -405,7 +405,7 @@ window.handleGunChange = function (el) {
           kaynak,
           notlar,
           bulten_izni: bulten,
-          saglik_onay: true
+          saglik_onay: false
         }));
         status.innerHTML = "✅ <strong>Hesabın oluşturuldu!</strong> E-postana gönderilen doğrulama bağlantısına tıklayarak girişini tamamlayabilirsin.";
         return;
@@ -422,7 +422,7 @@ window.handleGunChange = function (el) {
           kaynak,
           notlar,
           bulten_izni: bulten,
-          saglik_onay: true
+          saglik_onay: false
         });
       } catch (_err) {}
 
@@ -603,6 +603,25 @@ window.handleGunChange = function (el) {
   }
 
   const userId = session.user.id;
+
+  // ============================================================
+  // ⚡ SAĞLIK BEYANI MANUEL KONTROLÜ:
+  // Koddan manuel test etmek veya FALSE yapmak istersen:
+  // MANUEL_SAGLIK_ONAY değerini 'false' yapabilirsin.
+  // Otomatiğe dönmek için tekrar 'null' yapman yeterlidir.
+  // ============================================================
+  const MANUEL_SAGLIK_ONAY = null; // false, true veya null
+
+  // 🛠️ Konsoldan hızlı test için fonksiyon (F12 Konsolu):
+  // setSaglikOnay(false) yazarak anında false yapabilirsin!
+  window.setSaglikOnay = async function(durum) {
+    const val = !!durum;
+    localStorage.setItem("spqr_saglik_onay", val ? "true" : "false");
+    try { await sb.from("profiles").update({ saglik_onay: val }).eq("id", userId); } catch (_e) {}
+    try { await sb.auth.updateUser({ data: { saglik_onay: val } }); } catch (_e) {}
+    location.reload();
+  };
+
   let profile = {
     ad_soyad: session.user.user_metadata?.ad_soyad || "",
     telefon: session.user.user_metadata?.telefon || "",
@@ -610,7 +629,7 @@ window.handleGunChange = function (el) {
     tempo_seviyesi: session.user.user_metadata?.tempo_seviyesi || "",
     katilim_tercihi: session.user.user_metadata?.katilim_tercihi || "",
     bulten_izni: session.user.user_metadata?.bulten_izni ?? true,
-    saglik_onay: !!(session.user.user_metadata?.saglik_onay || localStorage.getItem("spqr_saglik_onay") === "true")
+    saglik_onay: false
   };
 
   const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || "—"; };
@@ -626,6 +645,17 @@ window.handleGunChange = function (el) {
         profile = { ...profile, ...data };
       }
     } catch (_err) {}
+
+    // Manuel veya yerel depolama kontrolü
+    if (MANUEL_SAGLIK_ONAY !== null) {
+      profile.saglik_onay = MANUEL_SAGLIK_ONAY;
+    } else if (localStorage.getItem("spqr_saglik_onay") === "false") {
+      profile.saglik_onay = false;
+    } else if (localStorage.getItem("spqr_saglik_onay") === "true") {
+      profile.saglik_onay = true;
+    } else if (profile.saglik_onay === undefined || profile.saglik_onay === null) {
+      profile.saglik_onay = !!session.user.user_metadata?.saglik_onay;
+    }
 
     setText("pAd",      profile.ad_soyad        || "—");
     setText("pTel",     profile.telefon          || "—");

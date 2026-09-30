@@ -952,6 +952,12 @@
     animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.14s backwards;
   }
 
+  /* ============ ALT SAYFA DÜZENİ ============ */
+  .subpage-section {
+    padding-top: 7.5rem !important;
+    padding-bottom: 5rem;
+  }
+
   /* ============ GERİ DÖNÜŞ BAĞLANTISI (.back-link) ============ */
   .back-link {
     display: inline-flex;
