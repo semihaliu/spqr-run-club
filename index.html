@@ -243,7 +243,7 @@
           <li>Haftanın üç günü koşu</li>
           <li>Yalnızca 3 kısa adım</li>
         </ul>
-        <button class="btn join-open" type="button" onclick="(function(){var m=document.getElementById('modalOverlay');if(m){m.classList.add('open');var s=m.querySelectorAll('[id^=step]');s.forEach(function(el,i){el.style.display=i===0?'':'none';});var d=m.querySelectorAll('.step-dot');d.forEach(function(el,i){el.className='step-dot'+(i===0?' active':'');});}})()">KAYIT OL →</button>
+        <button class="btn join-open" type="button" onclick="(function(){var m=document.getElementById('modalOverlay');if(m){m.classList.add('open');[0,1,2].forEach(function(i){document.getElementById('step'+i).style.display=i===0?'':'none';});var f=document.getElementById('progressFill');if(f)f.style.width='33%';var c=document.getElementById('stepCount');if(c)c.textContent='ADIM 1/3';}})()">KAYIT OL →</button>
       </div>
 
       <div class="join-cta-steps" aria-hidden="true">
@@ -374,34 +374,36 @@
 
 <!-- ============ KAYIT MODAL ============ -->
 <div class="modal-overlay" id="modalOverlay">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
     <button class="modal-close" id="modalKapat" aria-label="Kapat">×</button>
 
-    <div class="step-indicator">
-      <div class="step-dot active" id="dot0"></div>
-      <div class="step-dot" id="dot1"></div>
-      <div class="step-dot" id="dot2"></div>
+    <!-- Progress header -->
+    <div class="modal-progress-wrap">
+      <span class="modal-prog-label">KAYIT OL</span>
+      <div class="modal-progress-bar">
+        <div class="modal-progress-fill" id="progressFill" style="width:33%"></div>
+      </div>
+      <span class="modal-step-count" id="stepCount">ADIM 1/3</span>
     </div>
 
     <!-- ADIM 1 -->
     <div id="step0">
-      <h2 id="modalTitle">Merhaba!</h2>
-      <p class="modal-sub">Seni tanıyalım — 3 adımda tamamlıyorsun.</p>
+      <h2 class="modal-heading" id="modalHeading">Aramıza <em>katıl.</em></h2>
       <div class="form">
         <div class="field full">
-          <label for="rAd">Ad Soyad *</label>
+          <label for="rAd">AD SOYAD *</label>
           <input id="rAd" name="ad_soyad" type="text" required placeholder="Adın ve soyadın" />
         </div>
         <div class="field full">
-          <label for="rMail">E-posta *</label>
+          <label for="rMail">E-POSTA *</label>
           <input id="rMail" name="email" type="email" required placeholder="ornek@mail.com" />
         </div>
         <div class="field full">
-          <label for="rTel">Telefon</label>
+          <label for="rTel">TELEFON</label>
           <input id="rTel" name="telefon" type="tel" placeholder="05xx xxx xx xx" />
         </div>
         <div class="field full">
-          <label for="rSifre">Şifre * <span style="opacity:0.5;font-size:0.75rem;">(en az 6 karakter)</span></label>
+          <label for="rSifre">ŞİFRE * <span style="opacity:0.45;font-size:0.72rem;text-transform:none;letter-spacing:0;">(en az 6 karakter)</span></label>
           <input id="rSifre" name="sifre" type="password" required placeholder="••••••••" />
         </div>
       </div>
@@ -413,32 +415,61 @@
 
     <!-- ADIM 2 -->
     <div id="step1" style="display:none;">
-      <h2>Koşu tercihlerin</h2>
-      <p class="modal-sub">Hangi günler katılmayı planlıyorsun?</p>
+      <h2 class="modal-heading">Koşu <em>tercihlerin</em></h2>
       <div class="form">
-        <div class="field full">
-          <label>Katılım Günleri</label>
-          <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.25rem;">
-            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;opacity:1;text-transform:none;letter-spacing:0;">
-              <input type="checkbox" name="gun" value="Pazartesi" /> Pazartesi 20:00 · 18 Mart Stadyumu
+
+        <div class="modal-field-group">
+          <div class="modal-field-label">TEMPO SEVİYESİ</div>
+          <select id="rSeviye" name="seviye" class="modal-select">
+            <option value="">Hangi tempoda koşuyorsun?</option>
+            <option>Yeni Başlayan (5–7 dk/km)</option>
+            <option>Orta Seviye (4:30–5:30 dk/km)</option>
+            <option>İleri Seviye (&lt;4:30 dk/km)</option>
+          </select>
+        </div>
+
+        <div class="modal-field-group">
+          <div class="modal-field-label">HANGİ KOŞULARA KATILMAK İSTERSİN?</div>
+          <div class="modal-radio-group">
+            <label class="modal-radio-label">
+              <input type="radio" name="gun" value="Pazartesi" />
+              <span class="radio-custom"></span>
+              Pazartesi 20:00
             </label>
-            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;opacity:1;text-transform:none;letter-spacing:0;">
-              <input type="checkbox" name="gun" value="Persembe" /> Perşembe 20:00 · 18 Mart Stadyumu
+            <label class="modal-radio-label">
+              <input type="radio" name="gun" value="Persembe" />
+              <span class="radio-custom"></span>
+              Perşembe 20:00
             </label>
-            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;opacity:1;text-transform:none;letter-spacing:0;">
-              <input type="checkbox" name="gun" value="Cumartesi" /> Cumartesi 08:00 · Açık Alan Koşusu
+            <label class="modal-radio-label">
+              <input type="radio" name="gun" value="Cumartesi" />
+              <span class="radio-custom"></span>
+              Cumartesi 08:00
+            </label>
+            <label class="modal-radio-label">
+              <input type="radio" name="gun" value="Hepsi" />
+              <span class="radio-custom"></span>
+              Hepsi
             </label>
           </div>
         </div>
-        <div class="field full">
-          <label for="rSeviye">Koşu Seviyesi</label>
-          <select id="rSeviye" name="seviye" style="padding:0.75rem 0.9rem;border:1px solid rgba(10,10,10,0.12);background:transparent;font-family:inherit;font-size:0.9rem;border-radius:2px;outline:none;cursor:pointer;">
-            <option value="">Seç…</option>
-            <option>Yeni Başlayan</option>
-            <option>Orta Seviye</option>
-            <option>İleri Seviye</option>
+
+        <div class="modal-field-group">
+          <div class="modal-field-label">BİZİ NEREDEN DUYDUN?</div>
+          <select id="rKaynak" name="kaynak" class="modal-select">
+            <option value="">Seçiniz</option>
+            <option>Instagram</option>
+            <option>Bir arkadaştan</option>
+            <option>Google</option>
+            <option>Diğer</option>
           </select>
         </div>
+
+        <div class="modal-field-group">
+          <div class="modal-field-label">EKLEMEK İSTEDİĞİN BİR ŞEY VAR MI?</div>
+          <textarea id="rNot" name="not" class="modal-textarea" placeholder="Sağlık durumu, koşu geçmişi veya merak ettiklerin…"></textarea>
+        </div>
+
       </div>
       <div class="modal-nav">
         <button class="btn-ghost" onclick="goStep(0)">← Geri</button>
@@ -448,27 +479,34 @@
 
     <!-- ADIM 3 -->
     <div id="step2" style="display:none;">
-      <h2>Son adım!</h2>
-      <p class="modal-sub">Bizi nereden duydun ve eklemek istediğin bir şey var mı?</p>
-      <div class="form">
-        <div class="field full">
-          <label for="rKaynak">Bizi nereden duydun?</label>
-          <select id="rKaynak" name="kaynak" style="padding:0.75rem 0.9rem;border:1px solid rgba(10,10,10,0.12);background:transparent;font-family:inherit;font-size:0.9rem;border-radius:2px;outline:none;cursor:pointer;">
-            <option value="">Seç…</option>
-            <option>Instagram</option>
-            <option>Bir arkadaştan</option>
-            <option>Google</option>
-            <option>Diğer</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label for="rNot">Eklemek istediğin bir şey</label>
-          <textarea id="rNot" name="not" placeholder="İsteğe bağlı…" style="min-height:80px;"></textarea>
-        </div>
+      <h2 class="modal-heading">Onay &amp; <em>gönder</em></h2>
+      <div class="modal-checks">
+
+        <label class="modal-check-label">
+          <input type="checkbox" id="kvkkCheck" />
+          <span class="check-custom"></span>
+          <span><a href="#" style="color:var(--black);font-weight:600;">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin belirtilen kapsamda işlenmesini kabul ediyorum. <span class="check-required">(zorunlu)</span></span>
+        </label>
+
+        <label class="modal-check-label">
+          <input type="checkbox" id="saglikCheck" />
+          <span class="check-custom"></span>
+          <span><strong>Sağlık Beyanı:</strong> Bilinen herhangi bir kalp-damar hastalığım, kronik rahatsızlığım veya koşuya engel teşkil edecek fiziksel bir kısıtlılığım bulunmamaktadır ya da katılım için doktor onayı aldım. Etkinlik sırasında yaşanabilecek sağlık sorunlarının sorumluluğunun tarafıma ait olduğunu ve SPQR Run Club'ın hukuki sorumluluğu bulunmadığını kabul ediyorum. <span class="check-required">(zorunlu)</span></span>
+        </label>
+
+        <label class="modal-check-label">
+          <input type="checkbox" id="newsletterCheck" checked />
+          <span class="check-custom"></span>
+          <span>Koşu duyuruları ve etkinlik haberlerini e-posta ile almak istiyorum. <span style="opacity:0.5;">(isteğe bağlı)</span></span>
+        </label>
+
       </div>
-      <div class="modal-nav">
+
+      <p class="modal-info-text">Gönder'e bastığında bilgilerin bize ulaşır; WhatsApp grubuna eklenmen için en kısa sürede sana döneriz.</p>
+
+      <div class="modal-nav" style="margin-top:1.5rem;">
         <button class="btn-ghost" onclick="goStep(1)">← Geri</button>
-        <button class="btn" onclick="submitKayit()">GÖNDER →</button>
+        <button class="btn" onclick="submitKayit()">KAYIT OL →</button>
       </div>
       <div class="form-status" id="kayitStatus" style="margin-top:1rem;"></div>
     </div>
@@ -562,8 +600,10 @@
   function goStep(n) {
     [0,1,2].forEach(i => {
       document.getElementById('step'+i).style.display = i===n ? '' : 'none';
-      document.getElementById('dot'+i).className = 'step-dot' + (i<=n ? ' active' : '');
     });
+    const pct = ['33%','66%','100%'][n];
+    document.getElementById('progressFill').style.width = pct;
+    document.getElementById('stepCount').textContent = 'ADIM '+(n+1)+'/3';
   }
 
   // ============ CONTACT FORM ============
@@ -598,30 +638,41 @@
     const status = document.getElementById('kayitStatus');
     if (!_db) { status.textContent = '⚠️ Sistem hazır değil, lütfen sayfayı yenile.'; return; }
 
+    if (!document.getElementById('kvkkCheck').checked) {
+      status.textContent = '⚠️ KVKK metnini kabul etmelisin.'; return;
+    }
+    if (!document.getElementById('saglikCheck').checked) {
+      status.textContent = '⚠️ Sağlık beyanını kabul etmelisin.'; return;
+    }
+
     const email = document.getElementById('rMail').value.trim();
     const password = document.getElementById('rSifre').value;
     const fullName = document.getElementById('rAd').value.trim();
     const phone = document.getElementById('rTel').value.trim();
     const seviye = document.getElementById('rSeviye').value;
+    const gun = (document.querySelector('input[name="gun"]:checked') || {}).value || '';
+    const kaynak = document.getElementById('rKaynak').value;
+    const not = document.getElementById('rNot').value;
 
     if (!email || !password || !fullName) { status.textContent = '⚠️ Ad soyad, e-posta ve şifre zorunludur.'; return; }
     if (password.length < 6) { status.textContent = '⚠️ Şifre en az 6 karakter olmalıdır.'; return; }
 
     status.textContent = '⏳ Kaydediliyor...';
-    const { error } = await _db.auth.signUp({
-      email, password,
-      options: { data: { full_name: fullName, phone, seviye } }
+    var res = await _db.auth.signUp({
+      email: email, password: password,
+      options: { data: { full_name: fullName, phone: phone, seviye: seviye, gun: gun, kaynak: kaynak, not: not } }
     });
 
-    if (error) {
-      status.textContent = error.message.includes('already registered')
+    if (res.error) {
+      status.textContent = res.error.message.includes('already registered')
         ? '⚠️ Bu e-posta zaten kayıtlı. Giriş yap!'
-        : '⚠️ Hata: ' + error.message;
+        : '⚠️ Hata: ' + res.error.message;
       return;
     }
     status.innerHTML = '✅ Kaydın tamamlandı! E-postanı kontrol et.';
-    setTimeout(() => _overlay.classList.remove('open'), 3000);
+    setTimeout(function(){ document.getElementById('modalOverlay').classList.remove('open'); }, 3000);
   }
+
 </script>
 
 </body>

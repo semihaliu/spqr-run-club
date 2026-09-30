@@ -917,38 +917,188 @@
 
   .modal-close:hover { opacity: 1; }
 
-  .modal h2 {
+  .modal-heading {
     font-family: var(--display);
     font-weight: 900;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
+    font-size: 2rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    text-transform: none;
+  }
+  .modal-heading em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
   }
 
-  .modal .modal-sub {
-    font-size: 0.85rem;
-    opacity: 0.55;
+  /* Progress bar */
+  .modal-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     margin-bottom: 2rem;
+  }
+  .modal-prog-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    white-space: nowrap;
+  }
+  .modal-progress-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(10,10,10,0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .modal-progress-fill {
+    height: 100%;
+    background: var(--black);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .modal-step-count {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    white-space: nowrap;
+  }
+
+  /* Field groups in modal */
+  .modal-field-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+  .modal-field-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+  .modal-select {
+    width: 100%;
+    padding: 0.75rem 0;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+    color: var(--black);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230A0A0A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    padding-right: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .modal-select:focus { border-bottom-color: var(--black); }
+
+  /* Radio buttons */
+  .modal-radio-group { display: flex; flex-direction: column; gap: 0.75rem; }
+  .modal-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .modal-radio-label input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .radio-custom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(10,10,10,0.25);
+    flex-shrink: 0;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .modal-radio-label input[type="radio"]:checked ~ .radio-custom {
+    border-color: var(--black);
+    background: var(--black);
+  }
+  .modal-radio-label input[type="radio"]:checked ~ .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--cream);
+  }
+
+  /* Textarea */
+  .modal-textarea {
+    width: 100%;
+    padding: 0.6rem 0;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 70px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .modal-textarea:focus { border-bottom-color: var(--black); }
+
+  /* Checkboxes */
+  .modal-checks { display: flex; flex-direction: column; gap: 1.25rem; }
+  .modal-check-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    cursor: pointer;
+    user-select: none;
+  }
+  .modal-check-label input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .check-custom {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 1.5px solid rgba(10,10,10,0.25);
+    border-radius: 3px;
+    flex-shrink: 0;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    margin-top: 1px;
+  }
+  .modal-check-label input[type="checkbox"]:checked ~ .check-custom {
+    border-color: var(--black);
+    background: var(--black);
+  }
+  .modal-check-label input[type="checkbox"]:checked ~ .check-custom::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 6px;
+    width: 5px; height: 9px;
+    border: 2px solid var(--cream);
+    border-top: none; border-left: none;
+    transform: rotate(45deg);
+  }
+  .check-required { opacity: 0.45; font-size: 0.8rem; }
+
+  /* Info text */
+  .modal-info-text {
+    font-size: 0.82rem;
+    opacity: 0.5;
+    margin-top: 1.5rem;
+    line-height: 1.5;
   }
 
   .modal .form { display: flex; flex-direction: column; gap: 1rem; }
   .modal .form .field { grid-column: unset; }
   .modal .form .field.full { grid-column: unset; }
 
-  .step-indicator {
-    display: flex;
-    gap: 0.4rem;
-    margin-bottom: 2rem;
-  }
-
-  .step-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--line);
-    transition: background 0.2s;
-  }
-
+  .step-indicator { display: flex; gap: 0.4rem; margin-bottom: 2rem; }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background 0.2s; }
   .step-dot.active { background: var(--black); }
 
   .modal-nav {
@@ -975,3 +1125,4 @@
   }
 
   .btn-ghost:hover { border-color: var(--black); }
+
