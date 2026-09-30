@@ -375,7 +375,7 @@
 <!-- ============ KAYIT MODAL ============ -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
-    <button class="modal-close" id="modalKapat" aria-label="Kapat">×</button>
+    <button class="modal-close" id="modalKapat" aria-label="Kapat" onclick="document.getElementById('modalOverlay').classList.remove('open')">×</button>
 
     <!-- Progress header -->
     <div class="modal-progress-wrap">
@@ -432,27 +432,28 @@
           <div class="modal-field-label">HANGİ KOŞULARA KATILMAK İSTERSİN?</div>
           <div class="modal-radio-group">
             <label class="modal-radio-label">
-              <input type="radio" name="gun" value="Pazartesi" />
+              <input type="checkbox" name="gun" value="Pazartesi" onchange="handleGunChange(this)" />
               <span class="radio-custom"></span>
               Pazartesi 20:00
             </label>
             <label class="modal-radio-label">
-              <input type="radio" name="gun" value="Persembe" />
+              <input type="checkbox" name="gun" value="Persembe" onchange="handleGunChange(this)" />
               <span class="radio-custom"></span>
               Perşembe 20:00
             </label>
             <label class="modal-radio-label">
-              <input type="radio" name="gun" value="Cumartesi" />
+              <input type="checkbox" name="gun" value="Cumartesi" onchange="handleGunChange(this)" />
               <span class="radio-custom"></span>
               Cumartesi 08:00
             </label>
             <label class="modal-radio-label">
-              <input type="radio" name="gun" value="Hepsi" />
+              <input type="checkbox" name="gun" value="Hepsi" onchange="handleGunChange(this)" />
               <span class="radio-custom"></span>
               Hepsi
             </label>
           </div>
         </div>
+
 
         <div class="modal-field-group">
           <div class="modal-field-label">BİZİ NEREDEN DUYDUN?</div>
@@ -614,25 +615,48 @@
   };
 </script>
 
-<!-- Supabase ayrı yükleniyor — çöküşü engeller -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" onload="initSupabase()" onerror="console.warn('Supabase CDN yüklenemedi')"></script>
+<!-- Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js@2" onload="initSupabase()" onerror="console.warn('Supabase CDN yüklenemedi')"></script>
 <script>
   var _db = null;
 
   function initSupabase() {
     try {
-      _db = window.supabase.createClient(
+      var client = window.supabase || window.Supabase;
+      if (!client) return;
+      _db = client.createClient(
         'https://akqpdjdgsgwdhrdpgacl.supabase.co',
         'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
       );
-      _db.auth.getSession().then(({ data: { session } }) => {
-        if (session) {
+      _db.auth.getSession().then(function(r) {
+        if (r.data && r.data.session) {
           document.getElementById('navGirisLi').style.display = 'none';
           document.getElementById('navPanelLi').style.display = '';
         }
       });
     } catch(e) { console.warn('Supabase init hatası:', e); }
   }
+
+  // Gün seçim mantığı (çoklu seçim + Hepsi)
+  function handleGunChange(el) {
+    var all = Array.from(document.querySelectorAll('input[name="gun"]'));
+    var hepsi = document.querySelector('input[name="gun"][value="Hepsi"]');
+    var others = all.filter(function(c){ return c.value !== 'Hepsi'; });
+
+    if (el.value === 'Hepsi') {
+      if (el.checked) {
+        others.forEach(function(c){ c.checked = false; });
+      }
+    } else {
+      hepsi.checked = false;
+      var checkedCount = others.filter(function(c){ return c.checked; }).length;
+      if (checkedCount === others.length) {
+        hepsi.checked = true;
+        others.forEach(function(c){ c.checked = false; });
+      }
+    }
+  }
+
 
   async function submitKayit() {
     const status = document.getElementById('kayitStatus');
@@ -650,7 +674,7 @@
     const fullName = document.getElementById('rAd').value.trim();
     const phone = document.getElementById('rTel').value.trim();
     const seviye = document.getElementById('rSeviye').value;
-    const gun = (document.querySelector('input[name="gun"]:checked') || {}).value || '';
+    const gun = Array.from(document.querySelectorAll('input[name="gun"]:checked')).map(function(c){ return c.value; }).join(', ') || '';
     const kaynak = document.getElementById('rKaynak').value;
     const not = document.getElementById('rNot').value;
 
