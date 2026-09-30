@@ -248,6 +248,12 @@
       </ul>
     </div>
     <div class="footer-col">
+      <h5>Yasal</h5>
+      <ul>
+        <li><a href="kvkk.html">KVKK Aydınlatma Metni</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
       <h5>Sosyal</h5>
       <ul>
         <li><a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">Instagram</a></li>
@@ -260,12 +266,7 @@
   </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
 </body>
 </html>

@@ -1133,3 +1133,182 @@
 
   .btn-ghost:hover { border-color: var(--black); }
 
+  /* ============ SİTE PANELİ / GEÇİŞ DUVARI (GATEKEEPER) ============ */
+  #spqrGate {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #0A0A0A;
+    color: #F4EEDF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  #spqrGate[hidden] { display: none !important; }
+
+  .gate-box {
+    width: 100%;
+    max-width: 440px;
+    background: #141414;
+    border: 1px solid rgba(244, 238, 223, 0.15);
+    border-radius: 6px;
+    padding: 2.75rem 2.25rem;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #F4EEDF, transparent);
+  }
+  .gate-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.25rem;
+    border: 1px solid rgba(244, 238, 223, 0.2);
+    display: block;
+  }
+  .gate-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244, 238, 223, 0.6);
+    margin-bottom: 0.5rem;
+  }
+  .gate-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 2.2rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 0.85rem;
+    color: #F4EEDF;
+  }
+  .gate-desc {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(244, 238, 223, 0.7);
+    margin-bottom: 2rem;
+  }
+  .gate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    text-align: left;
+  }
+  .gate-input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .gate-input-wrap label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(244, 238, 223, 0.5);
+  }
+  .gate-input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(244, 238, 223, 0.2);
+    border-radius: 3px;
+    color: #F4EEDF;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    letter-spacing: 0.1em;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .gate-input:focus {
+    border-color: #F4EEDF;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .gate-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: #F4EEDF;
+    color: #0A0A0A;
+    border: none;
+    border-radius: 3px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .gate-btn:hover {
+    background: #FFFFFF;
+  }
+  .gate-btn:active {
+    transform: scale(0.99);
+  }
+  .gate-status {
+    font-size: 0.82rem;
+    text-align: center;
+    min-height: 1.2rem;
+    color: #ff6b6b;
+  }
+
+  /* ============ PROFİL VE DASHBOARD STİLLERİ ============ */
+  .profile-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 2rem 80px;
+  }
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 4rem;
+    align-items: start;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 900px) {
+    .profile-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  .profile-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2.5rem;
+  }
+  .profile-rows {
+    display: flex;
+    flex-direction: column;
+    divide-y: 1px solid var(--line);
+    margin-bottom: 2rem;
+  }
+  .profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.92rem;
+  }
+  .profile-row:last-child { border-bottom: none; }
+  .profile-row .k {
+    font-weight: 600;
+    opacity: 0.55;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .profile-row .v { font-weight: 600; color: var(--black); }
+
+

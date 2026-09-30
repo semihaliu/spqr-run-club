@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Giriş Yap — SPQR Run Club</title>
+  <title>Yeni Şifre Belirle — SPQR Run Club</title>
+  <meta name="description" content="SPQR Run Club yeni şifre belirleme sayfası." />
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    .auth-page {
-      min-height: 85vh;
+    .auth-wrap {
+      min-height: 80vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 120px 20px 60px;
     }
-    .auth-box {
+    .auth-card {
       width: 100%;
       max-width: 440px;
       background: #FFFFFF;
@@ -25,18 +26,12 @@
       border-radius: 4px;
       padding: 3rem 2.5rem;
     }
-    .auth-links-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
+    #resetWaiting {
+      text-align: center;
+      padding: 2.5rem 0;
       opacity: 0.75;
-    }
-    .auth-links-row a {
-      color: var(--black);
-      font-weight: 600;
-      text-decoration: underline;
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -55,41 +50,43 @@
     <li><a href="takvim.html">Takvim</a></li>
     <li><a href="galeri.html">Galeri</a></li>
     <li><a href="index.html#kayit">Kayıt</a></li>
+    <li><a href="index.html#iletisim">İletişim</a></li>
   </ul>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menü">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- ============ GİRİŞ FORMU ============ -->
-<div class="auth-page">
-  <div class="auth-box">
-    <div class="section-head">
-      <span class="section-num">ÜYE GİRİŞİ</span>
-      <h1 class="section-title">Tekrar hoş <em>geldin.</em></h1>
+<!-- ============ YENİ ŞİFRE ============ -->
+<main class="auth-wrap" id="sifreSifirlaPage">
+  <div class="auth-card">
+
+    <div id="resetWaiting">
+      ⏳ Oturum bağlantınız doğrulanıyor, lütfen bekleyiniz...
     </div>
 
-    <form class="form" id="loginForm" novalidate style="margin-top:1.5rem;">
-      <div class="field full">
-        <label for="lMail">E-posta Adresin *</label>
-        <input id="lMail" name="email" type="email" required placeholder="ornek@mail.com" autocomplete="email" />
+    <div id="resetFormWrap" hidden>
+      <div class="section-head">
+        <span class="section-num">GÜVENLİK</span>
+        <h1 class="section-title">Yeni Şifre <em>belirle.</em></h1>
       </div>
 
-      <div class="field full">
-        <label for="lSifre">Şifren *</label>
-        <input id="lSifre" name="password" type="password" required placeholder="••••••••" autocomplete="current-password" />
-      </div>
-
-      <button class="btn" type="submit" style="width:100%;margin-top:0.5rem;">GİRİŞ YAP →</button>
-      <div class="form-status" id="loginStatus" style="margin-top:1rem;"></div>
-    </form>
-
-    <div class="auth-links-row">
-      <a href="sifremi-unuttum.html">Şifremi Unuttum</a>
-      <span>Hesabın yok mu? <a href="index.html#kayit">Kayıt Ol</a></span>
+      <form class="form" id="passwordResetForm" novalidate style="margin-top:1.5rem;">
+        <div class="field full">
+          <label for="newPass">Yeni Şifren *</label>
+          <input id="newPass" name="password" type="password" required minlength="6" placeholder="En az 6 karakter" autocomplete="new-password" />
+        </div>
+        <div class="field full">
+          <label for="newPassConfirm">Yeni Şifre Tekrar *</label>
+          <input id="newPassConfirm" name="password_confirm" type="password" required minlength="6" placeholder="Şifreni tekrar gir" autocomplete="new-password" />
+        </div>
+        <button class="btn" type="submit" style="width:100%;margin-top:0.5rem;">ŞİFREYİ GÜNCELLE →</button>
+        <div class="form-status" id="resetStatus" style="margin-top:1.25rem;"></div>
+      </form>
     </div>
+
   </div>
-</div>
+</main>
 
 <!-- ============ FOOTER ============ -->
 <footer>

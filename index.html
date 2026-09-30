@@ -359,11 +359,19 @@
     </div>
 
     <div class="footer-col">
+      <h5>Yasal</h5>
+      <ul>
+        <li><a href="kvkk.html">KVKK Aydınlatma Metni</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
       <h5>Sosyal</h5>
       <ul>
         <li><a href="https://www.instagram.com/spqrrunclub/" target="_blank" rel="noopener">Instagram</a></li>
       </ul>
     </div>
+
   </div>
 
   <div class="footer-bottom">
@@ -486,7 +494,7 @@
         <label class="modal-check-label">
           <input type="checkbox" id="kvkkCheck" />
           <span class="check-custom"></span>
-          <span><a href="#" style="color:var(--black);font-weight:600;">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin belirtilen kapsamda işlenmesini kabul ediyorum. <span class="check-required">(zorunlu)</span></span>
+          <span><a href="kvkk.html" target="_blank" style="color:var(--black);font-weight:600;">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin belirtilen kapsamda işlenmesini kabul ediyorum. <span class="check-required">(zorunlu)</span></span>
         </label>
 
         <label class="modal-check-label">
@@ -515,189 +523,8 @@
   </div>
 </div>
 
-<script>
-  // ============ YEAR ============
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // ============ MOBILE NAV ============
-  const navLinks = document.getElementById('navLinks');
-  document.getElementById('mobileToggle').addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-  });
-  navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => navLinks.classList.remove('open'));
-  });
-
-  // ============ NEXT RUN ============
-  function updateNextRun() {
-    const now = new Date();
-    const day = now.getDay();
-    const hour = now.getHours();
-    const min = now.getMinutes();
-    const slots = [
-      { day: 1, hour: 20, label: 'PAZARTESİ', time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
-      { day: 4, hour: 20, label: 'PERŞEMBE',  time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
-      { day: 6, hour: 8,  label: 'CUMARTESİ', time: '08:00', place: 'Açık Alan Koşusu · Çanakkale' },
-    ];
-    function minutesFromNow(slot) {
-      let diff = (slot.day - day + 7) % 7;
-      if (diff === 0) {
-        if (slot.hour * 60 <= hour * 60 + min) diff = 7;
-      }
-      return diff * 24 * 60;
-    }
-    const next = slots.reduce((a, b) => minutesFromNow(a) < minutesFromNow(b) ? a : b);
-    document.getElementById('nextDay').textContent = next.label;
-    document.getElementById('nextTime').textContent = next.time;
-    document.getElementById('nextPlace').textContent = next.place;
-  }
-  updateNextRun();
-
-  // ============ ETKİNLİKLER ============
-  const MONTHS = ['OCA','ŞUB','MAR','NİS','MAY','HAZ','TEM','AĞU','EYL','EKİ','KAS','ARA'];
-  const races = [
-    { date: new Date('2026-10-18'), name: 'Çanakkale Yarı Maratonu', meta: '21.1 km · Çanakkale' },
-    { date: new Date('2026-11-08'), name: 'İstanbul Maratonu', meta: '42.2 km · İstanbul' },
-    { date: new Date('2027-03-18'), name: 'Troya Koşusu', meta: '10 km · Çanakkale' },
-  ];
-  const now = new Date();
-  const upcoming = races.filter(r => r.date >= now).sort((a,b) => a.date - b.date);
-  const evList = document.getElementById('evList');
-  if (!upcoming.length) {
-    evList.innerHTML = '<div class="ev-empty">Yakında etkinlik eklenecek.</div>';
-  } else {
-    evList.innerHTML = upcoming.map(r => `
-      <a class="ev-card" href="takvim.html" style="text-decoration:none;color:inherit;">
-        <div class="ev-date">
-          <span class="d">${r.date.getDate()}</span>
-          <span class="m">${MONTHS[r.date.getMonth()]}</span>
-        </div>
-        <div class="ev-body">
-          <div class="ev-name">${r.name}</div>
-          <div class="ev-meta">${r.meta}</div>
-        </div>
-        <span class="ev-arr">→</span>
-      </a>
-    `).join('');
-  }
-
-  // ============ REVEAL ============
-  document.documentElement.classList.add('js-ready');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0, rootMargin: '0px 0px -50px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  setTimeout(() => {
-    document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
-  }, 1500);
-
-  // ============ MODAL (global functions) ============
-  const _overlay = document.getElementById('modalOverlay');
-  document.getElementById('modalKapat').onclick = () => _overlay.classList.remove('open');
-  _overlay.addEventListener('click', e => { if (e.target === _overlay) _overlay.classList.remove('open'); });
-
-  function modalAc() { _overlay.classList.add('open'); goStep(0); }
-
-  function goStep(n) {
-    [0,1,2].forEach(i => {
-      document.getElementById('step'+i).style.display = i===n ? '' : 'none';
-    });
-    const pct = ['33%','66%','100%'][n];
-    document.getElementById('progressFill').style.width = pct;
-    document.getElementById('stepCount').textContent = 'ADIM '+(n+1)+'/3';
-  }
-
-  // ============ CONTACT FORM ============
-  document.getElementById('iletisimForm').onsubmit = function(e) {
-    e.preventDefault();
-    document.getElementById('iletisimStatus').textContent = '✓ Mesajın alındı, teşekkürler!';
-    this.reset();
-  };
-</script>
-
-<!-- Supabase -->
-<script src="https://unpkg.com/@supabase/supabase-js@2" onload="initSupabase()" onerror="console.warn('Supabase CDN yüklenemedi')"></script>
-<script>
-  var _db = null;
-
-  function initSupabase() {
-    try {
-      var client = window.supabase || window.Supabase;
-      if (!client) return;
-      _db = client.createClient(
-        'https://akqpdjdgsgwdhrdpgacl.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcXBkamRnc2d3ZGhyZHBnYWNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDQzODcsImV4cCI6MjEwNjI4MDM4N30.xmAyFGoA3297AjHtTDpfcbdBsKpXdtN0BtxHlDGUriU'
-      );
-      _db.auth.getSession().then(function(r) {
-        if (r.data && r.data.session) {
-          document.getElementById('navGirisLi').style.display = 'none';
-          document.getElementById('navPanelLi').style.display = '';
-        }
-      });
-    } catch(e) { console.warn('Supabase init hatası:', e); }
-  }
-
-  // Gün seçim mantığı (çoklu seçim + Hepsi)
-  function handleGunChange(el) {
-    var all = Array.from(document.querySelectorAll('input[name="gun"]'));
-    var hepsi = document.querySelector('input[name="gun"][value="Hepsi"]');
-    var others = all.filter(function(c){ return c.value !== 'Hepsi'; });
-
-    if (el.value === 'Hepsi') {
-      if (el.checked) {
-        others.forEach(function(c){ c.checked = false; });
-      }
-    } else {
-      hepsi.checked = false;
-      var checkedCount = others.filter(function(c){ return c.checked; }).length;
-      if (checkedCount === others.length) {
-        hepsi.checked = true;
-        others.forEach(function(c){ c.checked = false; });
-      }
-    }
-  }
-
-
-  async function submitKayit() {
-    const status = document.getElementById('kayitStatus');
-    if (!_db) { status.textContent = '⚠️ Sistem hazır değil, lütfen sayfayı yenile.'; return; }
-
-    if (!document.getElementById('kvkkCheck').checked) {
-      status.textContent = '⚠️ KVKK metnini kabul etmelisin.'; return;
-    }
-    if (!document.getElementById('saglikCheck').checked) {
-      status.textContent = '⚠️ Sağlık beyanını kabul etmelisin.'; return;
-    }
-
-    const email = document.getElementById('rMail').value.trim();
-    const password = document.getElementById('rSifre').value;
-    const fullName = document.getElementById('rAd').value.trim();
-    const phone = document.getElementById('rTel').value.trim();
-    const seviye = document.getElementById('rSeviye').value;
-    const gun = Array.from(document.querySelectorAll('input[name="gun"]:checked')).map(function(c){ return c.value; }).join(', ') || '';
-    const kaynak = document.getElementById('rKaynak').value;
-    const not = document.getElementById('rNot').value;
-
-    if (!email || !password || !fullName) { status.textContent = '⚠️ Ad soyad, e-posta ve şifre zorunludur.'; return; }
-    if (password.length < 6) { status.textContent = '⚠️ Şifre en az 6 karakter olmalıdır.'; return; }
-
-    status.textContent = '⏳ Kaydediliyor...';
-    var res = await _db.auth.signUp({
-      email: email, password: password,
-      options: { data: { full_name: fullName, phone: phone, seviye: seviye, gun: gun, kaynak: kaynak, not: not } }
-    });
-
-    if (res.error) {
-      status.textContent = res.error.message.includes('already registered')
-        ? '⚠️ Bu e-posta zaten kayıtlı. Giriş yap!'
-        : '⚠️ Hata: ' + res.error.message;
-      return;
-    }
-    status.innerHTML = '✅ Kaydın tamamlandı! E-postanı kontrol et.';
-    setTimeout(function(){ document.getElementById('modalOverlay').classList.remove('open'); }, 3000);
-  }
-
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
 </body>
 </html>
+
