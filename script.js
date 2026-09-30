@@ -639,22 +639,28 @@ window.handleGunChange = function (el) {
   async function loadProfile() {
     setText("pEmail", session.user.email || "—");
 
+    let dbProfile = null;
     try {
-      const { data, error } = await sb.from("profiles").select("*").eq("id", userId).single();
+      const { data, error } = await sb.from("profiles").select("*").eq("id", userId).maybeSingle();
       if (!error && data) {
+        dbProfile = data;
         profile = { ...profile, ...data };
       }
     } catch (_err) {}
 
-    // Manuel veya yerel depolama kontrolü
+    // Sağlık onayı öncelik sırası:
+    // 1. MANUEL_SAGLIK_ONAY (koddan elle true/false girilmişse)
+    // 2. Supabase 'profiles' tablosundaki 'saglik_onay' (Veritabanındaki gerçek değer)
+    // 3. Fallback: localStorage
     if (MANUEL_SAGLIK_ONAY !== null) {
       profile.saglik_onay = MANUEL_SAGLIK_ONAY;
-    } else if (localStorage.getItem("spqr_saglik_onay") === "false") {
+    } else if (dbProfile && typeof dbProfile.saglik_onay === "boolean") {
+      profile.saglik_onay = dbProfile.saglik_onay;
+      localStorage.setItem("spqr_saglik_onay", profile.saglik_onay ? "true" : "false");
+    } else if (localStorage.getItem("spqr_saglik_onay") !== null) {
+      profile.saglik_onay = localStorage.getItem("spqr_saglik_onay") === "true";
+    } else {
       profile.saglik_onay = false;
-    } else if (localStorage.getItem("spqr_saglik_onay") === "true") {
-      profile.saglik_onay = true;
-    } else if (profile.saglik_onay === undefined || profile.saglik_onay === null) {
-      profile.saglik_onay = !!session.user.user_metadata?.saglik_onay;
     }
 
     setText("pAd",      profile.ad_soyad        || "—");
