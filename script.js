@@ -9,8 +9,11 @@
 // ============================================================
 const GATE_PASSWORD = "Zs5T3ctn";
 
+// Eski kalıcı kilidi temizle
+try { localStorage.removeItem("spqr_gate_unlocked"); } catch(_e) {}
+
 function checkSiteGate() {
-  const isUnlocked = localStorage.getItem("spqr_gate_unlocked") === "true";
+  const isUnlocked = sessionStorage.getItem("spqr_gate_unlocked") === "true";
   let gateEl = document.getElementById("spqrGate");
 
   if (isUnlocked) {
@@ -52,7 +55,7 @@ function checkSiteGate() {
     e.preventDefault();
     const val = input.value.trim();
     if (val === GATE_PASSWORD) {
-      localStorage.setItem("spqr_gate_unlocked", "true");
+      sessionStorage.setItem("spqr_gate_unlocked", "true");
       gateEl.style.transition = "opacity 0.3s ease";
       gateEl.style.opacity = "0";
       setTimeout(() => {
@@ -60,6 +63,7 @@ function checkSiteGate() {
         document.body.classList.remove("gate-locked");
       }, 300);
     } else {
+
       status.textContent = "⚠️ Hatalı şifre. Lütfen tekrar deneyin.";
       input.value = "";
       input.focus();
