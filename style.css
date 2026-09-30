@@ -283,46 +283,81 @@
   }
 
   .next-run {
-    background: rgba(244,238,223,0.12);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(244,238,223,0.2);
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-    min-width: 180px;
-    text-align: center;
+    background: var(--cream-warm);
+    border: 1.5px solid var(--black);
+    color: var(--black-ink);
+    padding: 1.75rem 2.25rem;
+    min-width: 320px;
+    max-width: 380px;
+    border-radius: 0;
+    text-align: left;
+    position: relative;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
     animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.38s backwards;
   }
 
+  .next-run::before {
+    content: "■";
+    position: absolute;
+    top: 1.5rem;
+    right: 1.75rem;
+    color: var(--black);
+    animation: blink 1.5s ease-in-out infinite;
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
 
   .next-run .label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(244,238,223,0.55);
-    margin-bottom: 0.3rem;
+    color: var(--black);
+    font-weight: 700;
+    margin-bottom: 0.65rem;
   }
 
   .next-run .day {
     font-family: var(--display);
     font-weight: 900;
-    font-size: 1.5rem;
-    color: var(--cream);
+    font-size: 2.6rem;
+    color: var(--black);
     line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
   }
 
   .next-run .time {
     font-family: var(--display);
     font-weight: 700;
-    font-size: 1.1rem;
-    color: rgba(244,238,223,0.8);
+    font-size: 1.45rem;
+    color: var(--black);
+    opacity: 0.9;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.04em;
   }
 
   .next-run .place {
-    font-size: 0.7rem;
-    color: rgba(244,238,223,0.5);
-    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--black-ink);
+    opacity: 0.75;
+    line-height: 1.4;
   }
+
+  @media (max-width: 768px) {
+    .next-run {
+      min-width: 0;
+      width: 100%;
+      padding: 1.5rem 1.75rem;
+    }
+    .next-run .day { font-size: 2.2rem; }
+  }
+
 
   /* ============ MARQUEE ============ */
   .marquee {
