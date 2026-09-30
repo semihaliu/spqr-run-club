@@ -53,18 +53,26 @@
   }
 
   nav .logo-mark img {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
+    height: 38px;
+    width: auto;
+    border-radius: 0;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  nav .logo-mark:hover img {
+    transform: scale(1.04);
   }
 
   nav .logo-mark span {
     font-family: var(--display);
     font-weight: 900;
-    font-size: 1.1rem;
-    letter-spacing: 0.05em;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    line-height: 1;
   }
+
 
   .nav-links {
     display: flex;
@@ -788,12 +796,14 @@
   }
 
   .footer-brand img {
-    width: 48px;
     height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
+    width: auto;
+    border-radius: 0;
+    object-fit: contain;
     margin-bottom: 0.75rem;
+    display: block;
   }
+
 
   .footer-brand h4 {
     font-family: var(--display);
@@ -1169,14 +1179,15 @@
     background: linear-gradient(90deg, transparent, #F4EEDF, transparent);
   }
   .gate-logo {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
+    height: 56px;
+    width: auto;
+    border-radius: 0;
+    object-fit: contain;
     margin: 0 auto 1.25rem;
-    border: 1px solid rgba(244, 238, 223, 0.2);
+    border: none;
     display: block;
   }
+
   .gate-badge {
     display: inline-block;
     font-size: 0.68rem;

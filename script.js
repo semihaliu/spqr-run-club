@@ -26,7 +26,7 @@ function checkSiteGate() {
     gateEl.id = "spqrGate";
     gateEl.innerHTML = `
       <div class="gate-box">
-        <img src="logo.png" alt="SPQR Run Club" class="gate-logo" />
+        <img src="logo-light.png" alt="SPQR Run Club" class="gate-logo" />
         <span class="gate-badge">GİZLİ ERİŞİM</span>
         <h1 class="gate-title">SİTE PANELİ</h1>
         <p class="gate-desc">SPQR Run Club web sitesi şu an yapım aşamasındadır. Önizleme için lütfen erişim şifresini giriniz.</p>
