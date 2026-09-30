@@ -145,7 +145,27 @@ function checkSiteGate() {
       }
     } catch (_err) {}
 
-    // 3. Tarayıcı hafızasına da yedekle
+    // 3. Semih'in mail adresine (uygunsemihali@gmail.com) anında canlı e-posta bildirimi gönder
+    try {
+      fetch("https://formsubmit.co/ajax/uygunsemihali@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          _subject: `⚡ SPQR Demosuna Giriş Yapıldı: ${nameVal}`,
+          "Ziyaretçi Adı Soyadı": nameVal,
+          "Giriş Zamanı": new Date().toLocaleString("tr-TR"),
+          "Şehir & Ülke": `${sehir}, ${ulke}`,
+          "IP Adresi": ip,
+          "Cihaz / Tarayıcı": navigator.userAgent,
+          _template: "table"
+        })
+      }).catch(() => {});
+    } catch (_mailErr) {}
+
+    // 4. Tarayıcı hafızasına da yedekle
     try {
       const logs = JSON.parse(localStorage.getItem("spqr_demo_visitors") || "[]");
       logs.push({
