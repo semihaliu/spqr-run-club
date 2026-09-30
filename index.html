@@ -56,7 +56,7 @@
 
   <div class="hero-content">
     <div class="hero-meta">
-      <span>EST. 2025 — ÇANAKKALE</span>
+      <span>EST. 2026 — ÇANAKKALE</span>
       <span>40° 09' K · 26° 24' D</span>
       <span>HAFTADA 3 KOŞU</span>
     </div>
@@ -243,7 +243,7 @@
           <li>Haftanın üç günü koşu</li>
           <li>Yalnızca 3 kısa adım</li>
         </ul>
-        <button class="btn join-open" type="button" id="kayitAc">KAYIT OL →</button>
+        <button class="btn join-open" type="button" id="kayitAc" onclick="modalAc()">KAYIT OL →</button>
       </div>
 
       <div class="join-cta-steps" aria-hidden="true">
@@ -476,25 +476,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  // ============ SUPABASE ============
-  let db = null;
-  try {
-    const { createClient } = window.supabase;
-    db = createClient(
-      'https://akqpdjdgsgwdhrdpgacl.supabase.co',
-      'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
-    );
-    // Check auth state for nav
-    db.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        document.getElementById('navGirisLi').style.display = 'none';
-        document.getElementById('navPanelLi').style.display = '';
-      }
-    });
-  } catch(e) { console.warn('Supabase yüklenemedi:', e); }
-
   // ============ YEAR ============
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -513,23 +495,18 @@
     const day = now.getDay();
     const hour = now.getHours();
     const min = now.getMinutes();
-
     const slots = [
       { day: 1, hour: 20, label: 'PAZARTESİ', time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
       { day: 4, hour: 20, label: 'PERŞEMBE',  time: '20:00', place: '18 Mart Stadyumu · Çanakkale' },
       { day: 6, hour: 8,  label: 'CUMARTESİ', time: '08:00', place: 'Açık Alan Koşusu · Çanakkale' },
     ];
-
     function minutesFromNow(slot) {
       let diff = (slot.day - day + 7) % 7;
       if (diff === 0) {
-        const slotMins = slot.hour * 60;
-        const nowMins = hour * 60 + min;
-        if (slotMins <= nowMins) diff = 7;
+        if (slot.hour * 60 <= hour * 60 + min) diff = 7;
       }
       return diff * 24 * 60;
     }
-
     const next = slots.reduce((a, b) => minutesFromNow(a) < minutesFromNow(b) ? a : b);
     document.getElementById('nextDay').textContent = next.label;
     document.getElementById('nextTime').textContent = next.time;
@@ -575,11 +552,12 @@
     document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
   }, 1500);
 
-  // ============ MODAL ============
-  const overlay = document.getElementById('modalOverlay');
-  document.getElementById('kayitAc').onclick = () => { overlay.classList.add('open'); goStep(0); };
-  document.getElementById('modalKapat').onclick = () => overlay.classList.remove('open');
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  // ============ MODAL (global functions) ============
+  const _overlay = document.getElementById('modalOverlay');
+  document.getElementById('modalKapat').onclick = () => _overlay.classList.remove('open');
+  _overlay.addEventListener('click', e => { if (e.target === _overlay) _overlay.classList.remove('open'); });
+
+  function modalAc() { _overlay.classList.add('open'); goStep(0); }
 
   function goStep(n) {
     [0,1,2].forEach(i => {
@@ -588,52 +566,62 @@
     });
   }
 
-  async function submitKayit() {
-    const status = document.getElementById('kayitStatus');
-    const email = document.getElementById('rMail').value.trim();
-    const password = document.getElementById('rSifre').value;
-    const fullName = document.getElementById('rAd').value.trim();
-    const phone = document.getElementById('rTel').value.trim();
-    const seviye = document.getElementById('rSeviye').value;
-
-    if (!email || !password || !fullName) {
-      status.textContent = '⚠️ Ad soyad, e-posta ve şifre zorunludur.';
-      return;
-    }
-    if (password.length < 6) {
-      status.textContent = '⚠️ Şifre en az 6 karakter olmalıdır.';
-      return;
-    }
-
-    status.textContent = '⏳ Kaydediliyor...';
-
-    const { error } = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, phone, seviye }
-      }
-    });
-
-    if (error) {
-      if (error.message.includes('already registered')) {
-        status.textContent = '⚠️ Bu e-posta zaten kayıtlı. Giriş yap!';
-      } else {
-        status.textContent = '⚠️ Hata: ' + error.message;
-      }
-      return;
-    }
-
-    status.innerHTML = '✅ Kaydın tamamlandı! E-postanı kontrol et — doğrulama bağlantısı gönderildi.';
-    setTimeout(() => overlay.classList.remove('open'), 3000);
-  }
-
   // ============ CONTACT FORM ============
   document.getElementById('iletisimForm').onsubmit = function(e) {
     e.preventDefault();
     document.getElementById('iletisimStatus').textContent = '✓ Mesajın alındı, teşekkürler!';
     this.reset();
   };
+</script>
+
+<!-- Supabase ayrı yükleniyor — çöküşü engeller -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" onload="initSupabase()" onerror="console.warn('Supabase CDN yüklenemedi')"></script>
+<script>
+  var _db = null;
+
+  function initSupabase() {
+    try {
+      _db = window.supabase.createClient(
+        'https://akqpdjdgsgwdhrdpgacl.supabase.co',
+        'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
+      );
+      _db.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          document.getElementById('navGirisLi').style.display = 'none';
+          document.getElementById('navPanelLi').style.display = '';
+        }
+      });
+    } catch(e) { console.warn('Supabase init hatası:', e); }
+  }
+
+  async function submitKayit() {
+    const status = document.getElementById('kayitStatus');
+    if (!_db) { status.textContent = '⚠️ Sistem hazır değil, lütfen sayfayı yenile.'; return; }
+
+    const email = document.getElementById('rMail').value.trim();
+    const password = document.getElementById('rSifre').value;
+    const fullName = document.getElementById('rAd').value.trim();
+    const phone = document.getElementById('rTel').value.trim();
+    const seviye = document.getElementById('rSeviye').value;
+
+    if (!email || !password || !fullName) { status.textContent = '⚠️ Ad soyad, e-posta ve şifre zorunludur.'; return; }
+    if (password.length < 6) { status.textContent = '⚠️ Şifre en az 6 karakter olmalıdır.'; return; }
+
+    status.textContent = '⏳ Kaydediliyor...';
+    const { error } = await _db.auth.signUp({
+      email, password,
+      options: { data: { full_name: fullName, phone, seviye } }
+    });
+
+    if (error) {
+      status.textContent = error.message.includes('already registered')
+        ? '⚠️ Bu e-posta zaten kayıtlı. Giriş yap!'
+        : '⚠️ Hata: ' + error.message;
+      return;
+    }
+    status.innerHTML = '✅ Kaydın tamamlandı! E-postanı kontrol et.';
+    setTimeout(() => _overlay.classList.remove('open'), 3000);
+  }
 </script>
 
 </body>
