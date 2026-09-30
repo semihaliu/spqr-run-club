@@ -29,9 +29,6 @@
     position: relative;
     aspect-ratio: 1;
   }
-  .photo.photo-card {
-    cursor: default;
-  }
   .photo.featured-wide {
     grid-column: span 2;
     aspect-ratio: 16/10;
@@ -44,7 +41,7 @@
     width: 100%; height: 100%; object-fit: cover;
     display: block; transition: transform 0.4s ease;
   }
-  .photo:not(.photo-card):hover img { transform: scale(1.03); }
+  .photo:hover img { transform: scale(1.03); }
 
   .gallery-grid {
     display: grid;
@@ -130,7 +127,6 @@
     .photo.featured-wide,
     .photo.featured-full { grid-column: span 1; aspect-ratio: 16/10; }
     .photo { aspect-ratio: 4/3; }
-    .photo.photo-card { aspect-ratio: auto; padding: 2.25rem 1.5rem !important; }
   }
 </style>
 </head>
@@ -170,12 +166,9 @@
     </div>
 
     <div class="gallery-grid">
-      <!-- SIRA 1 (Geniş Manşet + Tekil) -->
-      <div class="photo featured-wide">
+      <!-- SIRA 1 (AÇILIŞ: Panoramik Karşılama Çemberi) -->
+      <div class="photo featured-full">
         <img src="galeri-13.jpg" alt="SPQR Run Club — 18 Mart Stadyumu Dev Karşılama Çemberi" loading="lazy" />
-      </div>
-      <div class="photo">
-        <img src="galeri-3.png" alt="SPQR Run Club — Koşucu Odaklanması" loading="lazy" />
       </div>
 
       <!-- SIRA 2 (3 Tekil: Hazırlık & Başlangıç) -->
@@ -189,15 +182,15 @@
         <img src="galeri-8.jpg" alt="SPQR Run Club — Kulüp Bayrağı ve Sahaya Giriş" loading="lazy" />
       </div>
 
-      <!-- SIRA 3 (Geniş + Tekil: SPQR Flamaları & Topluluk Ruhu) -->
+      <!-- SIRA 3 (Geniş + Tekil: SPQR Flamaları & Koşucu Odak) -->
       <div class="photo featured-wide">
         <img src="galeri-12.png" alt="SPQR Run Club — Resmi Kulüp Flamaları ve Liderler" loading="lazy" />
       </div>
       <div class="photo">
-        <img src="galeri-11.png" alt="SPQR Run Club — Koşu Sonrası Dayanışma ve Kardeşlik" loading="lazy" />
+        <img src="galeri-3.png" alt="SPQR Run Club — Koşucu Odaklanması" loading="lazy" />
       </div>
 
-      <!-- SIRA 4 (3 Tekil: Ritim & Tempo) -->
+      <!-- SIRA 4 (3 Tekil: Esneme & Topluluk Ruhu) -->
       <div class="photo">
         <img src="galeri-7.jpg" alt="SPQR Run Club — Esneme ve Açma Germe" loading="lazy" />
       </div>
@@ -205,17 +198,15 @@
         <img src="galeri-9.jpg" alt="SPQR Run Club — Grup Halinde Adım Adım" loading="lazy" />
       </div>
       <div class="photo">
-        <img src="galeri-2.jpg" alt="SPQR Run Club — Tribün Işıkları Altında Gece Antrenmanı" loading="lazy" />
+        <img src="galeri-11.png" alt="SPQR Run Club — Koşu Sonrası Dayanışma ve Kardeşlik" loading="lazy" />
       </div>
 
-      <!-- SIRA 5 (Geniş Aksiyon + Manifesto Kartı) -->
+      <!-- SIRA 5 (Geniş Aksiyon + Tekil) -->
       <div class="photo featured-wide">
         <img src="galeri-6.jpg" alt="SPQR Run Club — Pistte Tempolu Grup Koşusu" loading="lazy" />
       </div>
-      <div class="photo photo-card" style="background:var(--black);color:var(--cream);display:flex;flex-direction:column;justify-content:center;padding:2rem;border-radius:2px;">
-        <span style="font-family:var(--display);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0.6;margin-bottom:0.75rem;">SPQR RUN CLUB</span>
-        <p style="font-family:var(--serif);font-size:1.45rem;line-height:1.25;margin:0;font-style:italic;">"Piste adımını at, gerisi kendiliğinden gelir."</p>
-        <span style="font-size:0.75rem;opacity:0.5;margin-top:1.25rem;letter-spacing:0.05em;">ÇANAKKALE · 18 MART STADYUMU</span>
+      <div class="photo">
+        <img src="galeri-2.jpg" alt="SPQR Run Club — Tribün Işıkları Altında Gece Antrenmanı" loading="lazy" />
       </div>
 
       <!-- SIRA 6 (Geniş + Tekil: Stadyum Brifingi & Gece Koşusu) -->
