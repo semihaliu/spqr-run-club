@@ -192,6 +192,7 @@
     gap: 1.5rem;
     flex-wrap: wrap;
     margin-bottom: 1.5rem;
+    animation: pageFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .hero-meta span {
@@ -210,6 +211,7 @@
     color: var(--cream);
     text-transform: uppercase;
     letter-spacing: -0.01em;
+    animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
   }
 
   .hero h1 .italic-tag {
@@ -245,6 +247,7 @@
     color: rgba(244,238,223,0.8);
     max-width: 38ch;
     line-height: 1.6;
+    animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards;
   }
 
   .hero-intro strong { color: var(--cream); }
@@ -253,6 +256,7 @@
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
+    animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
   }
 
   .hero-social a {
@@ -286,7 +290,9 @@
     padding: 1rem 1.5rem;
     min-width: 180px;
     text-align: center;
+    animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.38s backwards;
   }
+
 
   .next-run .label {
     font-size: 0.65rem;
@@ -860,21 +866,61 @@
     .footer-grid { grid-template-columns: 1fr; }
   }
 
-  /* ============ REVEAL ============ */
+  /* ============ PAGE TRANSITION & ENTRANCE ANIMATIONS (BEEKY STYLE) ============ */
+  @keyframes pageFadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Tüm alt sayfalar açılırken hafif aşağıdan yukarı kayarak gelir */
+  .subpage-section,
+  .profile-wrap,
+  .auth-wrap,
+  .auth-page,
+  .legal-wrap {
+    animation: pageFadeInUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: opacity, transform;
+  }
+
+  .subpage-section .section-head,
+  .profile-wrap .section-head,
+  .legal-wrap .section-head,
+  .auth-card .section-head,
+  .auth-box .section-head {
+    animation: pageFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.06s backwards;
+  }
+
+  .subpage-section .sessions,
+  .subpage-section .meeting,
+  .subpage-section .race-list,
+  .subpage-section .gallery-grid,
+  .profile-wrap .profile-grid,
+  .legal-wrap .legal-content,
+  .auth-card form,
+  .auth-box form {
+    animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.14s backwards;
+  }
+
+  /* ============ SCROLL REVEAL (SAYFA İÇİ KAYDIRMA ANİMASYONU) ============ */
   .reveal {
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  /* JS adds .js-ready to <html> → only then hide elements before reveal */
-  .js-ready .reveal {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(36px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
   }
 
-  .js-ready .reveal.visible {
+  .reveal.visible,
+  .reveal.in-view {
     opacity: 1;
-    transform: none;
+    transform: translateY(0);
   }
+
 
   /* ============ MODAL ============ */
   .modal-overlay {

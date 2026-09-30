@@ -151,7 +151,6 @@ const sb = (typeof window.supabase !== "undefined" && window.supabase.createClie
 // 5. SCROLL İLE BELİREN ÖĞELER (REVEAL)
 // ============================================================
 (function () {
-  document.documentElement.classList.add("js-ready");
   const reveals = document.querySelectorAll(".reveal");
   if (!reveals.length) return;
 
@@ -159,16 +158,15 @@ const sb = (typeof window.supabase !== "undefined" && window.supabase.createClie
     entries.forEach(function (e) {
       if (e.isIntersecting) {
         e.target.classList.add("visible");
+        e.target.classList.add("in-view");
         io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.06 });
 
   reveals.forEach(r => io.observe(r));
-  setTimeout(() => {
-    document.querySelectorAll(".reveal:not(.visible)").forEach(el => el.classList.add("visible"));
-  }, 1200);
 })();
+
 
 
 // ============================================================
