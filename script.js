@@ -180,17 +180,21 @@ async function updateAuthUI() {
 
   try {
     const { data: { session } } = await sb.auth.getSession();
-    nav.querySelectorAll(".auth-item").forEach(el => el.remove());
+    
+    // Eski auth ve legacy öğeleri temizle
+    nav.querySelectorAll(".auth-item, #navGirisLi, #navPanelLi").forEach(el => el.remove());
 
     const kayitLink = nav.querySelector('a[href="#kayit"], a[href="index.html#kayit"]');
     const kayitLi = kayitLink ? kayitLink.closest("li") : null;
+    const isProfil = window.location.pathname.endsWith("profil.html");
+    const isGiris = window.location.pathname.endsWith("giris.html");
 
     if (session) {
       if (kayitLi) kayitLi.style.display = "none";
 
       const liProfil = document.createElement("li");
       liProfil.className = "auth-item";
-      liProfil.innerHTML = '<a href="profil.html">Profilim</a>';
+      liProfil.innerHTML = `<a href="profil.html"${isProfil ? ' class="active"' : ''}>Profilim</a>`;
 
       const liCikis = document.createElement("li");
       liCikis.className = "auth-item";
@@ -211,14 +215,20 @@ async function updateAuthUI() {
 
       const liGiris = document.createElement("li");
       liGiris.className = "auth-item";
-      liGiris.innerHTML = '<a href="giris.html">Giriş</a>';
+      liGiris.innerHTML = `<a href="giris.html"${isGiris ? ' class="active"' : ''}>Giriş</a>`;
       nav.appendChild(liGiris);
     }
+
+    // Mobil menü bağlantı tıklanınca kapansın
+    nav.querySelectorAll(".auth-item a").forEach(a => {
+      a.addEventListener("click", () => nav.classList.remove("open"));
+    });
   } catch (err) {
     console.warn("Auth UI güncellenemedi:", err);
   }
 }
 updateAuthUI();
+
 
 
 // ============================================================
