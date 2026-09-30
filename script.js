@@ -363,6 +363,7 @@ window.handleGunChange = function (el) {
         email,
         password,
         options: {
+          emailRedirectTo: window.location.origin + "/profil.html",
           data: {
             ad_soyad: adSoyad,
             telefon,
