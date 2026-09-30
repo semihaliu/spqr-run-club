@@ -626,7 +626,7 @@
       if (!client) return;
       _db = client.createClient(
         'https://akqpdjdgsgwdhrdpgacl.supabase.co',
-        'sb_publishable_RcZIzz6KRlVL7JH8tS-y0w_UvzvL8w8'
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcXBkamRnc2d3ZGhyZHBnYWNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDQzODcsImV4cCI6MjEwNjI4MDM4N30.xmAyFGoA3297AjHtTDpfcbdBsKpXdtN0BtxHlDGUriU'
       );
       _db.auth.getSession().then(function(r) {
         if (r.data && r.data.session) {
