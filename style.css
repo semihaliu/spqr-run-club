@@ -952,6 +952,36 @@
     animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.14s backwards;
   }
 
+  /* ============ GERİ DÖNÜŞ BAĞLANTISI (.back-link) ============ */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: gap 0.25s ease, opacity 0.2s ease;
+    opacity: 0.85;
+  }
+  .back-link:hover {
+    gap: 0.85rem;
+    opacity: 1;
+  }
+  .back-link svg {
+    width: 16px !important;
+    height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    fill: currentColor;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
   /* ============ SCROLL REVEAL (SAYFA İÇİ KAYDIRMA ANİMASYONU) ============ */
   .reveal {
     opacity: 0;
@@ -1462,11 +1492,46 @@
   .profil-form .field label { color: var(--black); opacity: 0.85; }
   .profil-form .field input,
   .profil-form .field select {
-    border-bottom-color: var(--line);
+    border-bottom: 1.5px solid var(--line);
     color: var(--black);
+    background-color: transparent;
   }
   .profil-form .field input:focus,
   .profil-form .field select:focus { border-bottom-color: var(--black); }
+
+  .profil-form .field select,
+  .field select,
+  select {
+    width: 100%;
+    padding: 0.75rem 1.8rem 0.75rem 0.2rem;
+    border: none;
+    border-bottom: 1.5px solid var(--line);
+    background-color: transparent;
+    color: var(--black);
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%230A0A0A'%3E%3Cpath d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 16px;
+    transition: border-color 0.2s ease;
+  }
+
+  .profil-form .field select option,
+  .field select option,
+  .modal-select option,
+  select option {
+    background-color: #F4EEDF !important;
+    color: #0A0A0A !important;
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+  }
   .profil-edit-actions {
     display: flex;
     gap: 1rem;
