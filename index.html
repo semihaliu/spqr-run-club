@@ -243,7 +243,7 @@
           <li>Haftanın üç günü koşu</li>
           <li>Yalnızca 3 kısa adım</li>
         </ul>
-        <button class="btn join-open" type="button" id="kayitAc" onclick="modalAc()">KAYIT OL →</button>
+        <button class="btn join-open" type="button" onclick="(function(){var m=document.getElementById('modalOverlay');if(m){m.classList.add('open');var s=m.querySelectorAll('[id^=step]');s.forEach(function(el,i){el.style.display=i===0?'':'none';});var d=m.querySelectorAll('.step-dot');d.forEach(function(el,i){el.className='step-dot'+(i===0?' active':'');});}})()">KAYIT OL →</button>
       </div>
 
       <div class="join-cta-steps" aria-hidden="true">
