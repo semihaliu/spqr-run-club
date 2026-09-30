@@ -283,6 +283,9 @@
   }
 
   .next-run {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
     background: var(--cream-warm);
     border: 1.5px solid var(--black);
     color: var(--black-ink);
@@ -294,7 +297,14 @@
     position: relative;
     box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
     animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.38s backwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
+
+  .next-run:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  }
+
 
   .next-run::before {
     content: "■";
