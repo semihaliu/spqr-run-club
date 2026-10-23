@@ -112,10 +112,13 @@ function checkSiteGate() {
       btn.textContent = "GİRİŞ YAPILIYOR...";
     }
 
-    // 1. IP ve Konum Bilgisi Al (En iyi çaba)
+    // 1. IP ve Konum Bilgisi Al (En fazla 2.5 saniye bekle, asılı kalmasın)
     let ip = "—", sehir = "—", ulke = "—";
     try {
-      const res = await fetch("https://ipapi.co/json/");
+      const controller = new AbortController();
+      const tId = setTimeout(() => controller.abort(), 2500);
+      const res = await fetch("https://ipapi.co/json/", { signal: controller.signal });
+      clearTimeout(tId);
       if (res.ok) {
         const d = await res.json();
         ip = d.ip || "—";
@@ -135,15 +138,22 @@ function checkSiteGate() {
     // 2. Supabase 'demo_giris_loglari' tablosuna kaydet
     try {
       if (sb) {
-        await sb.from("demo_giris_loglari").insert({
+        const { data, error } = await sb.from("demo_giris_loglari").insert({
           ad_soyad: nameVal,
           ip: ip,
           sehir: sehir,
           ulke: ulke,
           cihaz: navigator.userAgent
         });
+        if (error) {
+          console.error("⚠️ Supabase demo log hatası:", error);
+        } else {
+          console.log("✅ Demo giriş logu Supabase'e kaydedildi:", nameVal);
+        }
       }
-    } catch (_err) {}
+    } catch (err) {
+      console.error("Beklenmeyen log hatası:", err);
+    }
 
 
 
